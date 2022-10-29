@@ -12,3 +12,15 @@ body {
     width: 100px;
     height: 40px;
 }
+
+#map {
+    height: 100%;
+    background-color: grey;
+}
+
+
+footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
