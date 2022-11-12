@@ -12,10 +12,11 @@
     <link rel="stylesheet" href="assets/style.css">
     <script src="assets/jquery-3.6.0.min.js"></script>
     <script src="assets/jquery.mask.min.js"></script>
-    <!--<script src="assets/main.js"></script>-->
+    
+    <!--google maps-->    
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCeD0TKqU9r-PvYOZRBrw22mjVglqDupK4&callback=initMap">
-        </script>
+    </script>
 
     <!--google autenticação-->
     <meta name="google-signin-scope" content="profile email https://www.googleapis.com/auth/business.manage">
@@ -109,19 +110,20 @@
     <div id="map"></div>
 
     <script>
-        function initMap() {
-            var macc = { lat: -6.479984036211917, lng: -35.43179852420206 };
-            var map = new google.maps.Map(
-                document.getElementById('map'), { zoom: 15, center: macc });
-            $.ajax("http://localhost:8000/qq").done(resp => {
-                $(resp).each(function (i, probl) {
-                    var marker = new google.maps.Marker({ position: probl, map: map, label: probl.tipo });
-                })
-            })
-        }
-        initMap()
-    </script>
 
+        function initMap() {
+
+            var macc = { lat: 42.1382114, lng: -71.5212585 };
+
+            var map = new google.maps.Map(
+
+                document.getElementById('map'), { zoom: 15, center: macc });
+
+            var marker = new google.maps.Marker({ position: macc, map: map });
+
+        }
+
+    </script>
 
 
     <!--Footer ou roda pé-->

@@ -14,7 +14,10 @@ body {
 }
 
 #map {
-    height: 100%;
+    margin-left: 10vh;
+    margin-right: 10vh;
+    margin-top: 2vh;
+    height: 85vh;
     background-color: grey;
 }
 
@@ -22,5 +25,5 @@ body {
 footer {
     position: absolute;
     width: 100%;
-    bottom: 0;
+    bottom: 0%;
 }
