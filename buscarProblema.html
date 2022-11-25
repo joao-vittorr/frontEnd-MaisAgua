@@ -49,8 +49,7 @@
                     <li class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
                             href="cadastrarProblema.html">Informar problema</a></li>
                     <li class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                            href="buscarProblema.html">Consultar</a>
-                    </li>
+                            href="buscarProblema.html">Consultar</a></li>
                     <li class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
                             href="boletim.html">Boletim</a>
                     </li>
@@ -65,7 +64,7 @@
 
     <!---conteúdo da página --->
     <div class="container text-center">
-        <h3 class="text-center">CADASTRAR PROBLEMA</h3>
+        <br /><br /><h3 class="text-center">CADASTRAR PROBLEMA</h3>
         <hr />
         <form action="#" th:action="@{/problema}" th:object="${ProblemaDto}" method="POST">
             <div class="row">
@@ -98,15 +97,17 @@
                     <input type="hidden" id="longitude" name="longitude" value="3-35.43179852420206"
                         th:field="*{longitude_problema}">
                     <input type="hidden" id="token" name="token" value="token" th:field="*{token_problema}">
-                </div><br /><br />
+                </div><br /><br />  
+            </div><br />
 
-                <!--Botões do final da página-->
-                <button type="submit" class="btn btn-primary" border-radius="10px;">Enviar</button>
-                <button type="reset" class="btn btn-primary" border-radius="10px;">Restaurar</button>
-                <br /><br />
+            <!--Botões do final da página-->
+            <button type="submit" class="btn btn-primary" border-radius="10px;">Enviar</button>
+            <button type="reset" class="btn btn-primary" border-radius="10px;">Restaurar</button>
+            <br /><br />
         </form>
     </div>
     <br /><br /><br />
+
 
 
     <!--Footer ou roda pé-->
