@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Front-end</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css"/>
+    <script src="./js/bootstrap.bundle.js"></script>
+    <script src="./js/jquery-3.6.4.min.js"></script>
+    <script src="./js/jquery.serializejson.js"></script>
+
+    <script src="./js/people.js"></script>
+</head>
+<body class="container">
+    
+    <div class="d-flex justify-content-center align-items-center">
+
+        <div class="container card col-sm-4 text-start">
+
+          <h1>Pessoas</h1>
+
+        <form id="form">
+
+        <div class="col-sm p-1">
+            <label for="id_boletim" class="form-label">ID</label>
+            <input type="text" class="form-control" id="id_boletim" name="id_boletim" placeholder=""/>
+          </div>
+
+          <div class="col-sm p-1">
+            <label for="token_boletim" class="form-label">Token Boletim</label>
+            <input type="text" class="form-control" id="token_boletim" name="token_boletim" placeholder=""/>
+          </div>
+
+          <div class="col-sm p-1">
+            <label for="tipoProblema_boletim" class="form-label">Tipo do Problema</label>
+            <input type="text" class="form-control" id="tipoProblema_boletim" name="tipoProblema_boletim" placeholder=""/>
+          </div>
+
+          <div class="col-sm p-1">
+            <label for="latitude_boletim" class="form-label">Latidude</label>
+            <input type="text" class="form-control" id="latitude_boletim" name="latitude_boletim" placeholder=""/>
+          </div>
+
+          <div class="col-sm p-1">
+            <label for="longitude_boletim" class="form-label">Longitude</label>
+            <input type="text" class="form-control" id="longitude_boletim" name="longitude_boletim" placeholder=""/>
+          </div>
+          
+          <div class="col-sm p-1">
+            <label for="desc_boletim" class="form-label">Descrição</label>
+            <input type="text" class="form-control" id="desc_boletim" name="desc_boletim" placeholder=""/>
+          </div>
+
+        </form>
+
+          <div class="row p-3">
+            <button id="submit" class="btn btn-primary col-sm-6">Salvar</button>
+          </div>
+
+        </div>
+    </div>
+
+    <script>
+      var URL_BASE = "http://localhost:8080/"
+
+      $(function(){
+          $('#submit').click(save);
+      });
+
+      function save(){
+          //captura os dados do form, já colocando como um JSON
+          dados = $('#id_boletim,#token_boletim,#tipoProblema_boletim,#desc_boletim,#latitude_boletim,#longitude_boletim').serializeJSON();
+
+          console.log(dados);
+
+          //envia para o backend
+          $.ajax(URL_BASE+"cadastrarBoletim",{
+              data:JSON.stringify(dados),
+              method:'post',
+              contentType: "application/json",
+          }).done(function(res) {
+              console.log(res);
+          })
+          .fail(function(res) {
+              console.log(res);
+          });  
+      }
+
+    </script>
+
+
+</body>
+</html>
