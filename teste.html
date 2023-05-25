@@ -74,18 +74,16 @@
 
           console.log(dados);
 
-          //envia para o backend
+           //envia para o backend
           $.ajax(URL_BASE+"boletim",{
               data:JSON.stringify(dados),
               method:'post',
               contentType: "application/json",
           }).done(function(res) {
               console.log(res);
-              res.setHeader("Access-Control-Allow-Origin", "*");
           })
           .fail(function(res) {
               console.log(res);
-              res.setHeader("Access-Control-Allow-Origin", "*");
           });  
 
       }
