@@ -24,7 +24,7 @@
 
         <div class="col-sm p-1">
             <label for="id_boletim" class="form-label">ID</label>
-            <input type="text" class="form-control" id="id_boletim" name="id_boletim" placeholder=""/>
+            <input type="number" class="form-control" id="id_boletim" name="id_boletim" placeholder=""/>
           </div>
 
           <div class="col-sm p-1">
@@ -39,12 +39,12 @@
 
           <div class="col-sm p-1">
             <label for="latitude_boletim" class="form-label">Latidude</label>
-            <input type="text" class="form-control" id="latitude_boletim" name="latitude_boletim" placeholder=""/>
+            <input type="number" class="form-control" id="latitude_boletim" name="latitude_boletim" placeholder=""/>
           </div>
 
           <div class="col-sm p-1">
             <label for="longitude_boletim" class="form-label">Longitude</label>
-            <input type="text" class="form-control" id="longitude_boletim" name="longitude_boletim" placeholder=""/>
+            <input type="number" class="form-control" id="longitude_boletim" name="longitude_boletim" placeholder=""/>
           </div>
           
           <div class="col-sm p-1">
@@ -75,16 +75,19 @@
           console.log(dados);
 
           //envia para o backend
-          $.ajax(URL_BASE+"cadastrarBoletim",{
+          $.ajax(URL_BASE+"boletim",{
               data:JSON.stringify(dados),
               method:'post',
               contentType: "application/json",
           }).done(function(res) {
               console.log(res);
+              res.setHeader("Access-Control-Allow-Origin", "*");
           })
           .fail(function(res) {
               console.log(res);
+              res.setHeader("Access-Control-Allow-Origin", "*");
           });  
+
       }
 
     </script>
