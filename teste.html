@@ -18,7 +18,7 @@
 
         <div class="container card col-sm-4 text-start">
 
-          <h1>Pessoas</h1>
+          <h1>Boletim</h1>
 
         <form id="form">
 
@@ -69,13 +69,16 @@
       });
 
       function save(){
+        console.log("OI")
           //captura os dados do form, já colocando como um JSON
           dados = $('#id_boletim,#token_boletim,#tipoProblema_boletim,#desc_boletim,#latitude_boletim,#longitude_boletim').serializeJSON();
+          dados['longitude_boletim'] = parseFloat(dados['longitude_boletim'])
+          dados['latitude_boletim'] = parseFloat(dados['latitude_boletim'])
 
           console.log(dados);
 
            //envia para o backend
-          $.ajax(URL_BASE+"boletim",{
+          $.ajax(URL_BASE+"boletim/",{
               data:JSON.stringify(dados),
               method:'post',
               contentType: "application/json",
