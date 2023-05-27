@@ -18,14 +18,9 @@
 
         <div class="container card col-sm-4 text-start">
 
-          <h1>Boletim</h1>
+          <h1 class="d-flex justify-content-center" >Cadastrar Boletim</h1>
 
         <form id="form">
-
-        <div class="col-sm p-1">
-            <label for="id_boletim" class="form-label">ID</label>
-            <input type="number" class="form-control" id="id_boletim" name="id_boletim" placeholder=""/>
-          </div>
 
           <div class="col-sm p-1">
             <label for="token_boletim" class="form-label">Token Boletim</label>
@@ -71,7 +66,7 @@
       function save(){
         console.log("OI")
           //captura os dados do form, já colocando como um JSON
-          dados = $('#id_boletim,#token_boletim,#tipoProblema_boletim,#desc_boletim,#latitude_boletim,#longitude_boletim').serializeJSON();
+          dados = $('#token_boletim,#tipoProblema_boletim,#desc_boletim,#latitude_boletim,#longitude_boletim').serializeJSON();
           dados['longitude_boletim'] = parseFloat(dados['longitude_boletim'])
           dados['latitude_boletim'] = parseFloat(dados['latitude_boletim'])
 
