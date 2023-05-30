@@ -57,12 +57,12 @@
 
         <div class="container card col-sm-4 text-start">
 
-          <h1 class="d-flex justify-content-center" >Cadastrar Boletim</h1>
+          <h1 class="d-flex justify-content-center" >Cadastrar Problema</h1>
 
         <form id="form">
 
           <div class="col-sm p-1">
-            <label for="token_boletim" class="form-label">Token Boletim</label>
+            <label for="token_boletim" class="form-label">Token Problema</label>
             <input type="text" class="form-control" id="token_boletim" name="token_boletim" placeholder=""/>
           </div>
 
@@ -95,6 +95,26 @@
         </div>
     </div>
 
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Nome</th>
+          <th scope="col">E-mail</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody id="tableContent">
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
     <script>
       var URL_BASE = "http://localhost:8080/"
 
@@ -103,7 +123,6 @@
       });
 
       function save(){
-        console.log("OI")
           //captura os dados do form, já colocando como um JSON
           dados = $('#token_boletim,#tipoProblema_boletim,#desc_boletim,#latitude_boletim,#longitude_boletim').serializeJSON();
           dados['longitude_boletim'] = parseFloat(dados['longitude_boletim'])
@@ -125,11 +144,39 @@
 
       }
 
+      function updateList(){
+
+      $.ajax(URL_BASE+"listarBoletim",{
+          method:'get',
+      }).done(function(res) {
+
+          let table = $('#tableContent');
+          table.html("");
+          $(res._embedded.token).each(function(k,el){
+              let token = el;
+              tr = $(`<tr><td>Editar</td><td>Deletar</td></tr>`);
+              table.append(tr);
+          })
+        
+      })
+      .fail(function(res) {
+          let table = $('#tableContent');
+          table.html("");
+          tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+          table.append(tr);
+      });
+      }
+
+      $(function(){
+      $('#submit').click(save);
+
+      //Sempre que carregar a página atualiza a lista
+      updateList();
+      });
+
     </script>
 
-
-
-    <!--Footer ou roda pé-->
+   <!--    Footer ou roda pé
     <footer class='bg-primary'>
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -141,7 +188,8 @@
                 </div>
             </div>
         </div>
-    </footer>
+    </footer>-->
+
 
     <!--Script do bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
