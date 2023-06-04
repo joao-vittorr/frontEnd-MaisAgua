@@ -131,7 +131,7 @@
           console.log(dados);
 
            //envia para o backend
-          $.ajax(URL_BASE+"boletim/",{
+          $.ajax(URL_BASE+"boletim",{
               data:JSON.stringify(dados),
               method:'post',
               contentType: "application/json",
@@ -146,15 +146,16 @@
 
       function updateList(){
 
-      $.ajax(URL_BASE+"listarBoletim",{
+     
+
+      $.ajax(URL_BASE+"boletim",{
           method:'get',
       }).done(function(res) {
-
           let table = $('#tableContent');
           table.html("");
-          $(res._embedded.token).each(function(k,el){
-              let token = el;
-              tr = $(`<tr><td>Editar</td><td>Deletar</td></tr>`);
+          $(res._embedded.people).each(function(k,el){
+              let people = el;              
+              tr = $(`<tr><td>Editar</td><td>${people.desc_boletim}</td><td>Deletar</td></tr>`);
               table.append(tr);
           })
         

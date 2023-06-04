@@ -1,13 +1,13 @@
 function updateList(){
 
-    $.ajax(URL_BASE+"listarBoletim",{
+    $.ajax(URL_BASE+"boletim",{
         method:'get',
     }).done(function(res) {
 
         let table = $('#tableContent');
         table.html("");
-        $(res._embedded.token).each(function(k,el){
-            let token = el;
+        $(res._embedded.boletim).each(function(k,el){
+            let boletim = el;
             tr = $(`<tr><td>Editar</td><td>Deletar</td></tr>`);
             table.append(tr);
         })
