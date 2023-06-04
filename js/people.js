@@ -1,6 +1,6 @@
 function updateList(){
 
-    $.ajax(URL_BASE+"listarBoletim",{
+    $.ajax(URL_BASE+"boletim",{
         method:'get',
     }).done(function(res) {
 
