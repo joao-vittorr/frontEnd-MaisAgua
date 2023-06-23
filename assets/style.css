@@ -1,8 +1,7 @@
-* {
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 100%;
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .logo {
@@ -10,4 +9,21 @@
     height: 40px;
 }
 
-
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+  
+#content-wrap {
+    padding-bottom: 2.5rem;    /* altura do rodapé */
+}
+  
+footer {
+    padding-top: 8px;
+    position: absolute;
+    background-color: rgb(155, 155, 155);
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;            /* altura do rodapé */
+}
