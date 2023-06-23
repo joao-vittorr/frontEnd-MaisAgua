@@ -1,9 +1,6 @@
 * {
     margin: 0px;
     padding: 0px;
-}
-
-body {
     width: 100%;
     height: 100%;
 }
@@ -13,17 +10,4 @@ body {
     height: 40px;
 }
 
-#map {
-    margin-left: 10vh;
-    margin-right: 10vh;
-    margin-top: 2vh;
-    height: 85vh;
-    background-color: grey;
-}
 
-
-footer {
-    position: absolute;
-    width: 100%;
-    bottom: 0%;
-}
