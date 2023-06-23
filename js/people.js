@@ -9,7 +9,7 @@ function save(){
     console.log(dados);
 
      //envia para o backend
-    $.ajax(URL_BASE+"boletim/",{
+    $.ajax(URL_BASE+"boletim",{
         data:JSON.stringify(dados),
         method:'post',
         contentType: "application/json",
