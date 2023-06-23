@@ -21,7 +21,7 @@
 
 </head>
 
-<body class="container">
+<body>
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container px-4 px-lg-0">
@@ -34,10 +34,7 @@
           <div class="collapse navbar-collapse" id="navbarResponsive">
               <ul class="navbar-nav ms-auto py-4 py-lg-0">
                   <li class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                    href="meusProblemas.html">Meus Cadastros</a>
-                  </li>
-                  <li class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                          href="cadastrarProblema.html">Cadastrar problema</a></li>
+                          href="cadastrarProblema.html">Cadastrar Problema</a></li>
                   <li class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
                           href="buscarProblema.html">Consultar</a></li>
                   <li class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
@@ -50,54 +47,133 @@
               </ul>
           </div>
       </div>
-    </nav><br/><br/>
+  </nav>
+
+   <!--autenticação do google-->
+
+   <script src="https://accounts.google.com/gsi/client" async defer></script>
+   <script>
+       function setCookie(cname, cvalue, exdays) {
+           const d = new Date();
+           d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+           let expires = "expires=" + d.toUTCString();
+           document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+       }
+       function getCookie(cname) {
+           let name = cname + "=";
+           let decodedCookie = decodeURIComponent(document.cookie);
+           let ca = decodedCookie.split(';');
+           for (let i = 0; i < ca.length; i++) {
+               let c = ca[i];
+               while (c.charAt(0) == ' ') {
+                   c = c.substring(1);
+               }
+               if (c.indexOf(name) == 0) {
+                   return c.substring(name.length, c.length);
+               }
+           }
+           return "";
+       }
+       console.log(getCookie("token"))
+       function handleCredentialResponse(response) {
+           console.log("Encoded JWT ID token: " + response.credential);
+           console.log(response.credential)
+           setCookie("XSRF-TOKEN", response.credential)
+           setCookie("token", response.credential)
+           //document.cookie = "token="+response.credential;
+           //document.cookie = "XSRF-TOKEN="+response.credential;
+           $.ajax("{{route('update-cookie')}}")//armazena o cookie no php
+           //$("#atualizaCookiePHP").submit();
+           //window.location = window.location;
+       }
+       window.onload = function () {
+           google.accounts.id.initialize({
+               client_id: "237096676007-vfap0beu1eusvicj0t7hvr85o2l7no6b.apps.googleusercontent.com",
+               callback: handleCredentialResponse
+           });
+           google.accounts.id.renderButton(
+               document.getElementById("buttonDiv"),
+               { theme: "outline", size: "large" }  // customization attributes
+           );
+           google.accounts.id.prompt(); // also display the One Tap dialog
+       }
+   </script>
 
     <!---conteúdo da página --->
-   <div class="d-flex justify-content-center align-items-center">
+   <div>
 
-        <div class="container card col-sm-4 text-start">
 
-          <h1 class="d-flex justify-content-center" >Cadastrar Boletim</h1>
+    <h1 class="d-flex justify-content-center" >Cadastrar Boletim</h1>
 
-        <form id="form">
+        <div class="container card col-sm-15 text-start">
 
-          <div class="col-sm p-1">
-            <label for="token_boletim" class="form-label">Token Boletim</label>
-            <input type="text" class="form-control" id="token_boletim" name="token_boletim" placeholder=""/>
+        <form>
+
+           <div class="col-sm p-1">
+            <label for="token_user" class="form-label">Token Boletim</label>
+            <input type="text" class="form-control" id="token_user" name="token_boletim" placeholder=""/>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Selecione um Tipo</label>
+            <select class="form-control" id="tipo_boletim">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
           </div>
 
           <div class="col-sm p-1">
-            <label for="tipoProblema_boletim" class="form-label">Tipo do Problema</label>
-            <input type="text" class="form-control" id="tipoProblema_boletim" name="tipoProblema_boletim" placeholder=""/>
+            <label for="cep_boletim" class="form-label">CEP</label>
+            <input type="number" class="form-control w-25" id="cep_boletim" name="cep_boletim" placeholder=""/>
+          </div>
+
+          <div class="form-row">
+              <div class="col-md-6">
+                <label for="logradouro_boletim" class="form-label">Logradouro</label>
+                <input type="text" class="form-control" id="logradouro_boletim" name="logradouro_boletim" placeholder=""/>
+              </div>
           </div>
 
           <div class="col-sm p-1">
-            <label for="latitude_boletim" class="form-label">Latidude</label>
-            <input type="number" class="form-control" id="latitude_boletim" name="latitude_boletim" placeholder=""/>
+            <label for="bairro_boletim" class="form-label">Bairro</label>
+            <input type="text" class="form-control" id="bairro_boletim" name="bairro_boletim" placeholder=""/>
           </div>
 
           <div class="col-sm p-1">
-            <label for="longitude_boletim" class="form-label">Longitude</label>
-            <input type="number" class="form-control" id="longitude_boletim" name="longitude_boletim" placeholder=""/>
+            <label for="cidade_boletim" class="form-label">Cidade</label>
+            <input type="text" class="form-control" id="cidade_boletim" name="cidade_boletim" placeholder=""/>
+          </div>
+
+          <div class="col-sm p-1">
+            <label for="estado_boletim" class="form-label">Estado</label>
+            <input type="text" class="form-control" id="estado_boletim" name="estado_boletim" placeholder=""/>
+          </div>
+
+          <div class="col-sm p-1">
+            <label for="previsao_boletim" class="form-label">Previsão</label>
+            <input type="number" class="form-control w-25" id="previsao_boletim" name="previsao_boletim" placeholder=""/>
           </div>
           
           <div class="col-sm p-1">
             <label for="desc_boletim" class="form-label">Descrição</label>
-            <input type="text" class="form-control" id="desc_boletim" name="desc_boletim" placeholder=""/>
+            <textarea class="form-control" id="desc_boletim" rows="3"></textarea>
           </div>
 
         </form>
 
           <div class="row p-3">
-            <button id="submit" class="btn btn-primary col-sm-6">Salvar</button>
+            <button id="submit" class="btn btn-primary col-sm-6" onclick="saveBoletim()">Publicar</button>
+            <button id="reset" class="btn btn-light col-sm-6">Limpar</button>
           </div>
 
         </div>
     </div>
 
-  
 
-    <!--Footer ou roda pé-->
+   
     <footer class='bg-primary'>
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -110,6 +186,7 @@
             </div>
         </div>
     </footer>
+
 
     <!--Script do bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"

@@ -1,6 +1,6 @@
 var URL_BASE = "http://localhost:8080/"
 
-function save(){
+function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
     dados = $('#token_boletim,#tipoProblema_boletim,#desc_boletim,#latitude_boletim,#longitude_boletim').serializeJSON();
     dados['longitude_boletim'] = parseFloat(dados['longitude_boletim'])
@@ -22,11 +22,21 @@ function save(){
 
 }
 
-function updateList(){
+function saveProblema(){
+    //captura os dados do form, já colocando como um JSON
+    dados = $('#token_boletim,#tipoProblema_boletim,#desc_boletim,#latitude_boletim,#longitude_boletim').serializeJSON();
+    dados['longitude_boletim'] = parseFloat(dados['longitude_boletim'])
+    dados['latitude_boletim'] = parseFloat(dados['latitude_boletim'])
 
-    $.ajax(URL_BASE+"boletim",{
-        method:'get',
+    console.log(dados);
+
+     //envia para o backend
+    $.ajax(URL_BASE+"problema/",{
+        data:JSON.stringify(dados),
+        method:'post',
+        contentType: "application/json",
     }).done(function(res) {
+<<<<<<< HEAD
 
         let table = $('#tableContent');
         table.html("");
@@ -36,21 +46,17 @@ function updateList(){
             table.append(tr);
         })
        
+=======
+        console.log(res);
+>>>>>>> 44a9ed9238b2124e62d7cebf519394b7069c056b
     })
     .fail(function(res) {
-        let table = $('#tableContent');
-        table.html("");
-        tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
-        table.append(tr);
-    });
+        console.log(res);
+    });  
+
 }
 
-$(function(){
-    $('#submit').click(save);
 
-    //Sempre que carregar a página atualiza a lista
-    updateList();
-});
 
 function save(){
 
