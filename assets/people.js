@@ -8,6 +8,10 @@ function handleCredentialResponse(response) {
     email.textContent = data.email
     verifiedEmail.textContent = data.email_verified
     picture.setAttribute("src", data.picture)
+
+    if (typeof data.name != "undefined"){
+        console.log("existe")
+    }
 }
   
 google.accounts.id.initialize({
@@ -31,9 +35,8 @@ var URL_BASE = "http://localhost:8080/"
 
 function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#token_boletim,#tipoProblema_boletim,#desc_boletim,#latitude_boletim,#longitude_boletim').serializeJSON();
-    dados['longitude_boletim'] = parseFloat(dados['longitude_boletim'])
-    dados['latitude_boletim'] = parseFloat(dados['latitude_boletim'])
+    dados = $('#tipo_boletim, #cep_boletim, #cidade_boletim, #estado_boletim,#logradouro_boletim, #bairro_boletim, #desc_boletim, #previsao_boletim').serializeJSON();
+
 
     console.log(dados);
 
@@ -53,14 +56,13 @@ function saveBoletim(){
 
 function saveProblema(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#token_boletim,#tipoProblema_boletim,#desc_boletim,#latitude_boletim,#longitude_boletim').serializeJSON();
-    dados['longitude_boletim'] = parseFloat(dados['longitude_boletim'])
-    dados['latitude_boletim'] = parseFloat(dados['latitude_boletim'])
+    dados = $('#tipo_problema, #cep_problema, #cidade_problema, #estado_problema,#logradouro_problema, #numero_rua_problema, #bairro_problema, #desc_problema').serializeJSON();
+ 
 
     console.log(dados);
 
      //envia para o backend
-    $.ajax(URL_BASE+"problema/",{
+    $.ajax(URL_BASE+"problema",{
         data:JSON.stringify(dados),
         method:'post',
         contentType: "application/json",
@@ -81,19 +83,3 @@ function saveProblema(){
 
 }
 
-
-
-function save(){
-
-    //envia para o backend
-    $.ajax(URL_BASE+"boletim",{
-    
-    }).done(function(res) {
-        console.log(res);
-        //atualiza a lista após salvar
-        updateList();
-    })
-    .fail(function(res) {
-        console.log(res);
-    });
-}
