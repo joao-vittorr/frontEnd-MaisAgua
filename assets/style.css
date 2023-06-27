@@ -17,3 +17,11 @@ footer {
     width: 100%;
     height: 2.5rem;            /* altura do rodapé */
 }
+
+.centralizaTitulo{
+    text-align: center;
+    margin: 2% 2%;
+}
+form,div{
+    padding: 5px 10px;
+}

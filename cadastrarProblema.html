@@ -54,19 +54,13 @@
    <div>
 
 
-    <h1 class="d-flex justify-content-center" >Cadastrar Problema</h1>
+    <h1 class="centralizaTitulo" >Cadastrar Problema</h1>
 
         <div class="container card col-sm-15 text-start">
 
-        <form>
-
-           <div class="col-sm p-1">
-            <label for="token_user" class="form-label">Token Problema</label>
-            <input type="text" class="form-control" id="token_user" name="token_boletim" placeholder=""/>
-          </div>
-
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Qual é o seu problema?</label>
+        <form class="row g-3">
+          <div class="col-md-12">
+            <label for="tipo_problema">Qual é o seu problema?</label>
             <select class="form-control" id="tipo_problema">
               <option>1</option>
               <option>2</option>
@@ -75,44 +69,35 @@
               <option>5</option>
             </select>
           </div>
-
           <div class="mb-3 mt-3">
             <label for="formFile" class="form-label">Anexar foto</label>
             <input class="form-control" type="file" id="formFile">
           </div>
-
-          <div class="col-sm p-1">
+          <div class="col-md-2">
             <label for="cep_problema" class="form-label">CEP</label>
-            <input type="number" class="form-control w-25" id="cep_problema" name="cep_problema" placeholder=""/>
+            <input type="number" class="form-control" id="cep_problema" name="cep_problema" placeholder="59215000"/>
           </div>
-
-          <div class="form-row">
-              <div class="col-md-6">
-                <label for="logradouro_problema" class="form-label">Logradouro</label>
-                <input type="text" class="form-control" id="logradouro_problema" name="logradouro_problema" placeholder=""/>
-              </div>
-              <div class="col-md-3">
-                <label for="numero_rua_problema" class="form-label">Número</label>
-                <input type="number" class="form-control" id="numero_rua_problema" name="numero_rua_problema" placeholder=""/>
-              </div>
+          <div class="col-md-5">
+            <label for="cidade_problema" class="form-label">Cidade</label>
+            <input type="text" class="form-control" id="cidade_problema" name="cidade_problema" placeholder="Nova Cruz"/>
           </div>
-
-          <div class="col-sm p-1">
+          <div class="col-5">
+            <label for="estado_problema" class="form-label">Estado</label>
+            <input type="text" class="form-control" id="estado_problema" name="estado_problema" placeholder="Rio Grande do Norte"/>
+          </div>
+          <div class="col-7">
+            <label for="logradouro_problema" class="form-label">Logradouro</label>
+            <input type="text" class="form-control" id="logradouro_problema" name="logradouro_problema" placeholder=""/>
+          </div>
+          <div class="col-1">
+            <label for="numero_rua_problema" class="form-label">Número</label>
+            <input type="number" class="form-control" id="numero_rua_problema" name="numero_rua_problema" placeholder=""/>
+          </div>
+          <div class="col-4">
             <label for="bairro_problema" class="form-label">Bairro</label>
             <input type="text" class="form-control" id="bairro_problema" name="bairro_problema" placeholder=""/>
           </div>
-
-          <div class="col-sm p-1">
-            <label for="cidade_problema" class="form-label">Cidade</label>
-            <input type="text" class="form-control" id="cidade_problema" name="cidade_problema" placeholder=""/>
-          </div>
-
-          <div class="col-sm p-1">
-            <label for="estado_problema" class="form-label">Estado</label>
-            <input type="text" class="form-control" id="estado_problema" name="estado_problema" placeholder=""/>
-          </div>
-          
-          <div class="col-sm p-1">
+          <div class="col-12 p-1">
             <label for="desc_boletim" class="form-label">Descrição</label>
             <textarea class="form-control" id="desc_problema" rows="3"></textarea>
           </div>
