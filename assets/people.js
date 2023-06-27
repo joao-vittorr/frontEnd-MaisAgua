@@ -10,7 +10,58 @@ function handleCredentialResponse(response) {
     picture.setAttribute("src", data.picture)
 
     if (typeof data.name != "undefined"){
-        console.log("existe")
+        var URL_BASE = "http://localhost:8080/"
+
+        function saveBoletim(){
+            //captura os dados do form, já colocando como um JSON
+            dados = $('#tipo_boletim, #cep_boletim, #cidade_boletim, #estado_boletim,#logradouro_boletim, #bairro_boletim, #desc_boletim, #previsao_boletim').serializeJSON();
+            dados['token_user'] = data.name;
+
+            console.log(dados);
+
+            //envia para o backend
+            $.ajax(URL_BASE+"boletim",{
+                data:JSON.stringify(dados),
+                method:'post',
+                contentType: "application/json",
+            }).done(function(res) {
+                console.log(res);
+            })
+            .fail(function(res) {
+                console.log(res);
+            });  
+
+        }
+
+        function saveProblema(){
+            //captura os dados do form, já colocando como um JSON
+            dados = $('#tipo_problema, #cep_problema, #cidade_problema, #estado_problema,#logradouro_problema, #numero_rua_problema, #bairro_problema, #desc_problema').serializeJSON();
+            dados['token_user'] = data.name;
+
+            console.log(dados);
+
+            //envia para o backend
+            $.ajax(URL_BASE+"problema",{
+                data:JSON.stringify(dados),
+                method:'post',
+                contentType: "application/json",
+            }).done(function(res) {
+
+                let table = $('#tableContent');
+                table.html("");
+                $(res._embedded.boletim).each(function(k,el){
+                    let boletim = el;
+                    tr = $(`<tr><td>Editar</td><td>Deletar</td></tr>`);
+                    table.append(tr);
+                })
+            
+            })
+            .fail(function(res) {
+                console.log(res);
+            });  
+
+        }
+
     }
 }
   
@@ -29,57 +80,3 @@ google.accounts.id.renderButton(
 });
   
 google.accounts.id.prompt(); // also display the One Tap dialog
-
-
-var URL_BASE = "http://localhost:8080/"
-
-function saveBoletim(){
-    //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_boletim, #cep_boletim, #cidade_boletim, #estado_boletim,#logradouro_boletim, #bairro_boletim, #desc_boletim, #previsao_boletim').serializeJSON();
-
-
-    console.log(dados);
-
-     //envia para o backend
-    $.ajax(URL_BASE+"boletim",{
-        data:JSON.stringify(dados),
-        method:'post',
-        contentType: "application/json",
-    }).done(function(res) {
-        console.log(res);
-    })
-    .fail(function(res) {
-        console.log(res);
-    });  
-
-}
-
-function saveProblema(){
-    //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_problema, #cep_problema, #cidade_problema, #estado_problema,#logradouro_problema, #numero_rua_problema, #bairro_problema, #desc_problema').serializeJSON();
- 
-
-    console.log(dados);
-
-     //envia para o backend
-    $.ajax(URL_BASE+"problema",{
-        data:JSON.stringify(dados),
-        method:'post',
-        contentType: "application/json",
-    }).done(function(res) {
-
-        let table = $('#tableContent');
-        table.html("");
-        $(res._embedded.boletim).each(function(k,el){
-            let boletim = el;
-            tr = $(`<tr><td>Editar</td><td>Deletar</td></tr>`);
-            table.append(tr);
-        })
-       
-    })
-    .fail(function(res) {
-        console.log(res);
-    });  
-
-}
-
