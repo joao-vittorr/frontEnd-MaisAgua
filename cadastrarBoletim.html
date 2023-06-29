@@ -58,18 +58,17 @@
 
           <form class="row g-3">
             <div class="col-md-12">
-                <label for="tipo_boletim">Selecione um Tipo</label>
+                <label for="tipo_boletim">Qual o tipo do seu boletim?</label>
                 <select class="form-control" id="tipo_boletim">
-                  <option>Vazamento de água</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                  <option value="Vazamento">Vazamento</option>
+                  <option value="Falta de Água">Falta de Água</option>
+                  <option value="Pressão da Água">Pressão da Água</option>
+                  <option value="Manutenção">Manutenção</option>
                 </select>
             </div>
             <div class="col-md-2">
               <label label for="cep_boletim" class="form-label">CEP</label>
-              <input type="number" class="form-control" id="cep_boletim" name="cep_boletim" placeholder="59215000"/>
+              <input type="text" class="form-control" id="cep_boletim" name="cep_boletim" placeholder="59215000"/>
             </div>
             <div class="col-md-5">
               <label for="cidade_boletim" class="form-label">Cidade</label>

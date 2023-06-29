@@ -33,6 +33,7 @@ function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
     dados = $('#tipo_boletim, #cep_boletim, #cidade_boletim, #estado_boletim,#logradouro_boletim, #bairro_boletim, #desc_boletim, #previsao_boletim').serializeJSON();
     dados['token_user'] = data.sub;
+    dados['previsao_boletim'] = parseFloat(dados['previsao_boletim'])
 
     console.log(dados);
 
