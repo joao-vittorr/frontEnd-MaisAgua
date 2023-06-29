@@ -1,4 +1,4 @@
-
+var data = null;
 
 function handleCredentialResponse(response) {
     data = jwt_decode(response.credential)
@@ -10,8 +10,8 @@ function handleCredentialResponse(response) {
     email.textContent = data.email
     verifiedEmail.textContent = data.email_verified
     picture.setAttribute("src", data.picture)
-
 }
+
 
 google.accounts.id.initialize({
     client_id: "237096676007-vfap0beu1eusvicj0t7hvr85o2l7no6b.apps.googleusercontent.com", callback: handleCredentialResponse
@@ -33,7 +33,7 @@ var URL_BASE = "http://localhost:8080/"
 
 function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_boletim, #cep_boletim, #cidade_boletim, #estado_boletim,#logradouro_boletim, #bairro_boletim, #desc_boletim, #previsao_boletim').serializeJSON();
+    dados = $('#tipo_boletim, #cep_boletim, #cidade_boletim, #estado_boletim,#logradouro_boletim, #bairro_boletim, #desc_boletim, #previsao_boletim,#token_user').serializeJSON();
     dados['token_user'] = data.sub;
     dados['previsao_boletim'] = parseFloat(dados['previsao_boletim'])
 
@@ -76,11 +76,10 @@ $(function(){
 
 function saveProblema(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema').serializeJSON();
-    dados['token_user'] = "asadassads";
+    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user').serializeJSON();
+    dados['token_user'] = data.sub;
+
     console.log(dados);
-
-
 
     //envia para o backend
     $.ajax(URL_BASE+"problema",{
