@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="assets/style.css">
   <script src="assets/jquery-3.6.0.min.js"></script>
   <script src="assets/jquery.mask.min.js"></script>
+  <script src="assets/serial.js"></script>
   
 
   <!--google autenticação-->
@@ -61,7 +62,7 @@
         <form class="row g-3">
           <div class="col-md-12">
             <label for="tipo_problema">Qual é o seu problema?</label>
-            <select class="form-control" id="tipo_problema">
+            <select class="form-control" id="tipo_problema" name="tipo_problema">
               <option value="Vazamento">Vazamento</option>
               <option value="Falta de Água">Falta de Água</option>
               <option value="Pressão da Água">Pressão da Água</option>
@@ -97,14 +98,14 @@
             <input type="text" class="form-control" id="bairro_problema" name="bairro_problema" placeholder=""/>
           </div>
           <div class="col-12 p-1">
-            <label for="desc_boletim" class="form-label">Descrição</label>
-            <textarea class="form-control" id="desc_problema" rows="3"></textarea>
+            <label for="desc_problema" class="form-label">Descrição</label>
+            <textarea class="form-control" id="desc_problema" name="desc_problema" rows="3"></textarea>
           </div>
 
         </form>
 
           <div class="row p-3">
-            <button id="submit" class="btn btn-primary col-sm-6" onclick="saveProblema()">Publicar</button>
+            <button id="submit" class="btn btn-primary col-sm-6">Publicar</button>
             <button id="reset" class="btn btn-light col-sm-6">Limpar</button>
           </div>
 

@@ -1,5 +1,7 @@
+
+
 function handleCredentialResponse(response) {
-    const data = jwt_decode(response.credential)
+    data = jwt_decode(response.credential)
   
     fullName.textContent = data.name
     sub.textContent = data.sub // token do google
@@ -51,12 +53,34 @@ function saveBoletim(){
 
 }
 
+function listar(){
+
+$.ajax(URL_BASE+"problema",{
+    method:'get',
+}).done(function(res) {
+
+    let table = $('#tableContent');
+    table.html("");
+    $(res._embedded.problema).each(function(k,el){
+        let problema = el;
+        tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>${problema.cidade_problema}</td><td>Deletar</td></tr>`);
+        table.append(tr);
+    })
+    })
+};
+
+$(function(){
+    $('#submit').click(saveProblema);
+});
+
+
 function saveProblema(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_problema, #cep_problema, #cidade_problema, #estado_problema,#logradouro_problema, #numero_rua_problema, #bairro_problema, #desc_problema').serializeJSON();
-    dados['token_user'] = data.sub;
-
+    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema').serializeJSON();
+    dados['token_user'] = "asadassads";
     console.log(dados);
+
+
 
     //envia para o backend
     $.ajax(URL_BASE+"problema",{
@@ -67,9 +91,9 @@ function saveProblema(){
 
         let table = $('#tableContent');
         table.html("");
-        $(res._embedded.boletim).each(function(k,el){
-            let boletim = el;
-            tr = $(`<tr><td>Editar</td><td>Deletar</td></tr>`);
+        $(res._embedded.problema).each(function(k,el){
+            let problema = el;
+            tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>Deletar</td></tr>`);
             table.append(tr);
         })
     
