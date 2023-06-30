@@ -27,6 +27,7 @@ google.accounts.id.renderButton(
     logo_alignment: "left",
 });
 
+
 google.accounts.id.prompt(); // also display the One Tap dialog
 
 var URL_BASE = "http://localhost:8080/"
