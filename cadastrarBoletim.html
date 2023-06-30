@@ -14,6 +14,7 @@
     <script src="assets/jquery-3.6.0.min.js"></script>
     <script src="assets/jquery.mask.min.js"></script>
     <script src="assets/serial.js"></script>
+    <script src="assets/serial.js"></script>
     
 
     <!--google autenticação-->
@@ -59,13 +60,13 @@
 
           <form class="row g-3">
             <div class="col-md-12">
-                <label for="tipo_boletim">Qual o tipo do seu boletim?</label>
-                <select class="form-control" id="tipo_boletim">
-                  <option value="Vazamento">Vazamento</option>
-                  <option value="Falta de Água">Falta de Água</option>
-                  <option value="Pressão da Água">Pressão da Água</option>
-                  <option value="Manutenção">Manutenção</option>
-                </select>
+              <label for="tipoProblema_boletim">Qual é o seu problema?</label>
+              <select class="form-control" id="tipoProblema_boletim" name="tipoProblema_boletim">
+                <option value="Vazamento">Vazamento</option>
+                <option value="Falta de Água">Falta de Água</option>
+                <option value="Pressão da Água">Pressão da Água</option>
+                <option value="Manutenção">Manutenção</option>
+              </select>
             </div>
             <div class="col-md-2">
               <label label for="cep_boletim" class="form-label">CEP</label>
@@ -89,11 +90,11 @@
             </div>
             <div class="col-12 p-1">
               <label for="desc_boletim" class="form-label">Descrição</label>
-              <textarea class="form-control" id="desc_boletim" rows="3"></textarea>
+              <textarea class="form-control" id="desc_boletim" name="desc_boletim" rows="3"></textarea>
             </div>            
             <div class="col-md-3">
               <label for="previsao_boletim" class="form-label">Previsão</label>
-              <input type="number" class="form-control" id="previsao_boletim" name="previsao_boletim" placeholder=""/>
+              <input type="text" class="form-control" id="previsao_boletim" name="previsao_boletim" placeholder=""/>
             </div>
           </form>
           <div class="row p-3">

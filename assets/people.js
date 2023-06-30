@@ -35,9 +35,9 @@ var URL_BASE = "http://localhost:8080/"
 
 function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_boletim, #cep_boletim, #cidade_boletim, #estado_boletim,#logradouro_boletim, #bairro_boletim, #desc_boletim, #previsao_boletim,#token_user').serializeJSON();
+    dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user,#previsao_boletim').serializeJSON();
+    dados['previsao_boletim'] = parseFloat(dados['previsao_boletim']);
     dados['token_user'] = data.sub;
-    dados['previsao_boletim'] = parseFloat(dados['previsao_boletim'])
 
     console.log(dados);
 
@@ -47,7 +47,15 @@ function saveBoletim(){
         method:'post',
         contentType: "application/json",
     }).done(function(res) {
-        console.log(res);
+
+        let table = $('#tableContent');
+        table.html("");
+        $(res._embedded.problema).each(function(k,el){
+            let problema = el;
+            tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>Deletar</td></tr>`);
+            table.append(tr);
+        })
+    
     })
     .fail(function(res) {
         console.log(res);
@@ -71,9 +79,9 @@ $.ajax(URL_BASE+"problema",{
     })
 };
 
-$(function(){
-    $('#submit').click(saveProblema);
-});
+//$(function(){
+ //   $('#submit').click(saveProblema);
+//});
 
 
 function saveProblema(){
