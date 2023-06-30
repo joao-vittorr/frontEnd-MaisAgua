@@ -1,5 +1,6 @@
 var data = null;
 
+
 function handleCredentialResponse(response) {
     data = jwt_decode(response.credential)
   
