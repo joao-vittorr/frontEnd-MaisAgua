@@ -51,31 +51,27 @@
     </nav>
 
     <!---conteúdo da página --->
-    <div class="container text-center">
-        <br /><br /><h3 class="text-center">Buscar problema</h3>
-        <hr />
-        <form action="#" th:action="@{/problema}" th:object="${ProblemaDto}" method="POST">
-            <div class="row">
-                <div class="col-sm-3">
-                    <label for="exampleFormControlSelect1">Tipo:</label>
-                </div>
-                <div class="col-sm-9"><select class="form-control" id="exampleFormControlSelect1"
-                        th:field="*{tipo_problema}">
-                        <option value="0">Clique para selecionar uma opção</option>
-                        <option value="1">Vazamento</option>
-                        <option value="2">Falta de Água</option>
-                        <option value="3">Pressão da Água</option>
-                        <option value="4">Manutenção</option>
-                    </select>
-                </div>
-            </div>
-        </form>
-            <!--Botões do final da página-->
-            <button type="submit" class="btn btn-primary" border-radius="10px;">Enviar</button>
-            <button type="reset" class="btn btn-primary" border-radius="10px;">Restaurar</button>
-            <br /><br />
-    </div>
-    <br /><br /><br />
+    <div>
+        <h1 class="centralizaTitulo" >Buscar</h1>
+    
+        <div class="container card col-sm-15 text-start">
+            <form class="row g-3">
+              <div class="col-md-12">
+                <label for="tipo_problema">Qual é o seu problema?</label>
+                <select class="form-control" id="tipo_problema" name="tipo_problema">
+                  <option value="Vazamento">Vazamento</option>
+                  <option value="Falta de Água">Falta de Água</option>
+                  <option value="Pressão da Água">Pressão da Água</option>
+                  <option value="Manutenção">Manutenção</option>
+                </select>
+              </div>
+            </form></br>
+    
+              <div class="row p-3">
+                <button id="submit" class="btn btn-primary col-sm-12" onclick="">Buscar</button>
+              </div>
+          </div>
+      </div>
 
 
 
