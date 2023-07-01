@@ -1,5 +1,5 @@
-var data = null;
-
+var data;
+var resNav = document.getElementById('resNav');
 
 function handleCredentialResponse(response) {
     data = jwt_decode(response.credential)
@@ -11,8 +11,12 @@ function handleCredentialResponse(response) {
     email.textContent = data.email
     verifiedEmail.textContent = data.email_verified
     picture.setAttribute("src", data.picture)
+    
 }
 
+if(typeof data != "undefined" && typeof data != null){
+    resNav.innerHTML =  '<a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont" href="cadastrarBoletim.html">Cadastrar Boletim</a>';
+}
 
 google.accounts.id.initialize({
     client_id: "237096676007-vfap0beu1eusvicj0t7hvr85o2l7no6b.apps.googleusercontent.com", callback: handleCredentialResponse
@@ -21,11 +25,11 @@ google.accounts.id.initialize({
 google.accounts.id.renderButton( 
     document.getElementById("buttonDiv"), {
         theme: "filled_black",
-    size: "large",
-    type: "standard",
-    shape: "pill",
-    locale: "pt-BR",
-    logo_alignment: "left",
+        size: "medium",
+        type: "standard",
+        shape: "pill",
+        locale: "pt-BR",
+        logo_alignment: "left",
 });
 
 
@@ -79,10 +83,6 @@ $.ajax(URL_BASE+"problema",{
     })
 };
 
-//$(function(){
- //   $('#submit').click(saveProblema);
-//});
-
 
 function saveProblema(){
     //captura os dados do form, já colocando como um JSON
@@ -112,3 +112,4 @@ function saveProblema(){
     });  
 
 }
+
