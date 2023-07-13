@@ -14,11 +14,10 @@
     <script src="assets/jquery-3.6.0.min.js"></script>
     <script src="assets/jquery.mask.min.js"></script>
     <script src="assets/serial.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="assets/gauth.js"></script>
+    <link rel="stylesheet" href="assets/gauth.css" />
     
-
-    <!--google autenticação-->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
 
 </head>
 
@@ -43,12 +42,35 @@
                     <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
                             href="cadastrarBoletim.html">Cadastrar Boletim</a>
                     </div>
-                    <div class="nav-item"><div class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont" id="buttonDiv"></div>
+                    <div class="nav-item"><div class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont">
+                        <div>
+                        <!-- configuracoes do google -->
+                        <div id="g_id_onload"
+                            data-client_id="237096676007-vfap0beu1eusvicj0t7hvr85o2l7no6b.apps.googleusercontent.com"
+                            data-context="signin"
+                            data-ux_mode="popup"
+                            data-callback="loginCallback"
+                            data-auto_prompt="false">
+                        </div>
+                    
+                        <!-- botao de login -->
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-shape="rectangular"
+                            data-theme="outline"
+                            data-text="signin_with"
+                            data-size="large"
+                            data-logo_alignment="left">
+                        </div>
+                        <!-- local onde ira aparecer as informacoes do usuario -->
+                        <div class="g_id_logado"></div>
+                    </div></div>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
+
 
     <!---conteúdo da página --->
 
