@@ -15,8 +15,7 @@
     <script src="assets/jquery.mask.min.js"></script>
     <script src="assets/serial.js"></script>
     <script src="https://accounts.google.com/gsi/client" async></script>
-    <script src="assets/gauth.js"></script>
-    <link rel="stylesheet" href="assets/gauth.css" />
+    <script src="assets/people.js"></script>
     
 
 </head>
@@ -34,10 +33,13 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <div class="navbar-nav ms-auto py-4 py-lg-0">
                     <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                            href="cadastrarProblema.html">Cadastrar problema</a>
+                            href="buscarProblema.html">Consultar Problema</a>
                     </div>
                     <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                            href="buscarProblema.html">Consultar</a>
+                        href="buscarBoletim.html">Consultar Boletim</a>
+                    </div>
+                    <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
+                            href="cadastrarProblema.html">Cadastrar problema</a>
                     </div>
                     <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
                             href="cadastrarBoletim.html">Cadastrar Boletim</a>
@@ -73,8 +75,31 @@
 
 
     <!---conteúdo da página --->
+    <div>
+        <h1 class="centralizaTitulo" >Buscar Boletim</h1>
+    
+        <div class="container card col-sm-15 text-start">
+            <form class="row g-3">
+              <div class="col-md-12">
+                <label for="tipoProblema_boletim">Qual é o seu problema?</label>
+                <select class="form-control" id="tipoProblema_boletim" name="tipoProblema_boletim">
+                  <option value="Vazamento">Vazamento</option>
+                  <option value="Falta de Água">Falta de Água</option>
+                  <option value="Pressão da Água">Pressão da Água</option>
+                  <option value="Manutenção">Manutenção</option>
+                </select>
+              </div>
+            </form></br>
+    
+              <div class="row p-3">
+                <button id="submit" class="btn btn-primary col-sm-12" onclick="">Buscar</button>
+              </div>
+          </div>
+      </div>
 
 
+
+    
     <script src="assets/people.js"></script>
 
     <!--Footer ou roda pé-->
@@ -87,7 +112,7 @@
     </footer>
 
     <!--Script do bootstrap-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 
 </html>

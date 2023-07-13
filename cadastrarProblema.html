@@ -15,8 +15,7 @@
     <script src="assets/jquery.mask.min.js"></script>
     <script src="assets/serial.js"></script>
     <script src="https://accounts.google.com/gsi/client" async></script>
-    <script src="assets/gauth.js"></script>
-    <link rel="stylesheet" href="assets/gauth.css" />
+    <script src="assets/people.js"></script>
     
 
 </head>
@@ -24,52 +23,55 @@
 <body>
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container px-4 px-lg-0">
-            <a class="navbar-brand" href="index.html"><img class="logo" src="assets/logo.png" alt="Logo mais água"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                Menu
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <div class="navbar-nav ms-auto py-4 py-lg-0">
-                    <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                            href="cadastrarProblema.html">Cadastrar problema</a>
-                    </div>
-                    <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                            href="buscarProblema.html">Consultar</a>
-                    </div>
-                    <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                            href="cadastrarBoletim.html">Cadastrar Boletim</a>
-                    </div>
-                    <div class="nav-item"><div class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont">
-                        <div>
-                        <!-- configuracoes do google -->
-                        <div id="g_id_onload"
-                            data-client_id="237096676007-vfap0beu1eusvicj0t7hvr85o2l7no6b.apps.googleusercontent.com"
-                            data-context="signin"
-                            data-ux_mode="popup"
-                            data-callback="loginCallback"
-                            data-auto_prompt="false">
-                        </div>
-                    
-                        <!-- botao de login -->
-                        <div class="g_id_signin"
-                            data-type="standard"
-                            data-shape="rectangular"
-                            data-theme="outline"
-                            data-text="signin_with"
-                            data-size="large"
-                            data-logo_alignment="left">
-                        </div>
-                        <!-- local onde ira aparecer as informacoes do usuario -->
-                        <div class="g_id_logado"></div>
-                    </div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+      <div class="container px-4 px-lg-0">
+          <a class="navbar-brand" href="index.html"><img class="logo" src="assets/logo.png" alt="Logo mais água"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+              aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+              Menu
+              <i class="fas fa-bars"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+              <div class="navbar-nav ms-auto py-4 py-lg-0">
+                  <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
+                          href="buscarProblema.html">Consultar Problema</a>
+                  </div>
+                  <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
+                      href="buscarBoletim.html">Consultar Boletim</a>
+                  </div>
+                  <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
+                          href="cadastrarProblema.html">Cadastrar problema</a>
+                  </div>
+                  <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
+                          href="cadastrarBoletim.html">Cadastrar Boletim</a>
+                  </div>
+                  <div class="nav-item"><div class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont">
+                      <div>
+                      <!-- configuracoes do google -->
+                      <div id="g_id_onload"
+                          data-client_id="237096676007-vfap0beu1eusvicj0t7hvr85o2l7no6b.apps.googleusercontent.com"
+                          data-context="signin"
+                          data-ux_mode="popup"
+                          data-callback="loginCallback"
+                          data-auto_prompt="false">
+                      </div>
+                  
+                      <!-- botao de login -->
+                      <div class="g_id_signin"
+                          data-type="standard"
+                          data-shape="rectangular"
+                          data-theme="outline"
+                          data-text="signin_with"
+                          data-size="large"
+                          data-logo_alignment="left">
+                      </div>
+                      <!-- local onde ira aparecer as informacoes do usuario -->
+                      <div class="g_id_logado"></div>
+                  </div></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </nav>
 
 
     <!---conteúdo da página --->

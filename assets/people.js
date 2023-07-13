@@ -1,39 +1,57 @@
-var data;
-var resNav = document.getElementById('resNav');
+//Google Login
+//decodifica o jwt
+function jwtDecode (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
 
-function handleCredentialResponse(response) {
-    data = jwt_decode(response.credential)
-  
-    fullName.textContent = data.name
-    sub.textContent = data.sub // token do google
-    given_name.textContent = data.given_name
-    family_name.textContent = data.family_name
-    email.textContent = data.email
-    verifiedEmail.textContent = data.email_verified
-    picture.setAttribute("src", data.picture)
-    
+    return JSON.parse(jsonPayload);
 }
 
-if(typeof data != "undefined" && typeof data != null){
-    resNav.innerHTML =  '<a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont" href="cadastrarBoletim.html">Cadastrar Boletim</a>';
+//essa é a funcao que o google irá chamar quando um usuario se autenticar
+function loginCallback(resp){
+    cred = jwtDecode(resp.credential);
+    //aqui voce podera ver todas as informacoes que o google retorna
+    console.log(cred);
+    //salva o token inteiro, pois só é possível salvar strings no localStorage
+    //cuidado, esse token é mutavel, não pode ser usado como chave no banco
+    localStorage.setItem("gauth-token", resp.credential);
+    setLoginStatus(cred);
 }
 
-google.accounts.id.initialize({
-    client_id: "237096676007-vfap0beu1eusvicj0t7hvr85o2l7no6b.apps.googleusercontent.com", callback: handleCredentialResponse
+function logout(){
+    localStorage.setItem("gauth-token", undefined);
+    document.querySelector(".g_id_logado").innerHTML = "";
+    document.querySelector(".g_id_signin").style.display = 'block';
+}
+
+function setLoginStatus(cred){
+    console.log(cred);
+    //esconde o botao de login do google
+    document.querySelector(".g_id_signin").style.display = 'none';
+    //mostra o usuario logado
+    html = `<div class='g_login'>
+                <img class='g_pic' src="${cred.picture}">
+                <span><div class='g_name'>${cred.given_name} ${cred.family_name}</div><div class='g_email'>${cred.email}</div></span>
+                <a href='#' onclick='logout()'><img src="assets/fechar.png" alt="Sair da conta"/></a>
+            </div>`
+    document.querySelector(".g_id_logado").innerHTML = html;
+}
+
+//ao carregar a pagina, verifica se ja esta logado
+window.addEventListener("load",() => {
+    if (localStorage.getItem("gauth-token") != undefined){
+        //se houver um token salvo
+        cred = jwtDecode(localStorage.getItem("gauth-token"));
+        //descriptografa e mostra o usuario logado
+        setLoginStatus(cred);
+    }
 });
 
-google.accounts.id.renderButton( 
-    document.getElementById("buttonDiv"), {
-        theme: "filled_black",
-        size: "medium",
-        type: "standard",
-        shape: "pill",
-        locale: "pt-BR",
-        logo_alignment: "left",
-});
 
-
-google.accounts.id.prompt(); // also display the One Tap dialog
+// enviando dados para o back-end
 
 var URL_BASE = "http://localhost:8080/"
 
