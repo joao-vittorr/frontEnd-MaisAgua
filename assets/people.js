@@ -1,4 +1,4 @@
-//Google Login
+//Google Login 
 //decodifica o jwt
 function jwtDecode (token) {
     var base64Url = token.split('.')[1];
@@ -25,6 +25,8 @@ function logout(){
     localStorage.setItem("gauth-token", undefined);
     document.querySelector(".g_id_logado").innerHTML = "";
     document.querySelector(".g_id_signin").style.display = 'block';
+    document.querySelector(".g_id_logadoNavBar").innerHTML = "";
+
 }
 
 function setLoginStatus(cred){
@@ -39,6 +41,15 @@ function setLoginStatus(cred){
             </div>`
     document.querySelector(".g_id_logado").innerHTML = html;
 }
+
+
+//function setNavStatus(){
+    //esconde o botao de login do google
+//    document.querySelector(".g_id_logadoNavBar").style.display = 'none';
+//    htmlNavBar = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarProblema.html">Cadastrar problema</a></div>
+//                <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarBoletim.html">Cadastrar Boletim</a></div>`
+//    document.querySelector(".g_id_logadoNavBar").innerHTML = htmlNavBar;
+//}
 
 //ao carregar a pagina, verifica se ja esta logado
 window.addEventListener("load",() => {
@@ -55,16 +66,45 @@ window.addEventListener("load",() => {
 
 var URL_BASE = "http://localhost:8080/"
 
-function saveBoletim(){
+function saveBoletim(cred){
     //captura os dados do form, já colocando como um JSON
     dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user,#previsao_boletim').serializeJSON();
     dados['previsao_boletim'] = parseFloat(dados['previsao_boletim']);
-    dados['token_user'] = data.sub;
+    dados['token_user'] = cred.sub;
 
     console.log(dados);
 
     //envia para o backend
     $.ajax(URL_BASE+"boletim",{
+        data:JSON.stringify(dados),
+        method:'post',
+        contentType: "application/json",
+    }).done(function(res) {
+
+        let table = $('#tableContent');
+        table.html("");
+        $(res._embedded.problema).each(function(k,el){
+            let problema = el;
+            tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>Deletar</td></tr>`);
+            table.append(tr);
+        })
+    
+    })
+    .fail(function(res) {
+        console.log(res);
+    });  
+
+}
+
+function saveProblema(cred){
+    //captura os dados do form, já colocando como um JSON
+    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user').serializeJSON();
+    dados['token_user'] = cred.sub;
+
+    console.log(dados);
+
+    //envia para o backend
+    $.ajax(URL_BASE+"problema",{
         data:JSON.stringify(dados),
         method:'post',
         contentType: "application/json",
@@ -102,32 +142,4 @@ $.ajax(URL_BASE+"problema",{
 };
 
 
-function saveProblema(){
-    //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user').serializeJSON();
-    dados['token_user'] = data.sub;
-
-    console.log(dados);
-
-    //envia para o backend
-    $.ajax(URL_BASE+"problema",{
-        data:JSON.stringify(dados),
-        method:'post',
-        contentType: "application/json",
-    }).done(function(res) {
-
-        let table = $('#tableContent');
-        table.html("");
-        $(res._embedded.problema).each(function(k,el){
-            let problema = el;
-            tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>Deletar</td></tr>`);
-            table.append(tr);
-        })
-    
-    })
-    .fail(function(res) {
-        console.log(res);
-    });  
-
-}
 
