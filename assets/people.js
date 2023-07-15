@@ -1,5 +1,6 @@
 //Google Login 
 //decodifica o jwt
+var tokenUser = null;
 function jwtDecode (token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -21,6 +22,7 @@ function loginCallback(resp){
     setLoginStatus(cred);
 }
 
+
 function logout(){
     localStorage.setItem("gauth-token", undefined);
     document.querySelector(".g_id_logado").innerHTML = "";
@@ -31,6 +33,7 @@ function logout(){
 
 function setLoginStatus(cred){
     console.log(cred);
+    tokenUser = cred.sub;
     //esconde o botao de login do google
     document.querySelector(".g_id_signin").style.display = 'none';
     //mostra o usuario logado
@@ -66,11 +69,11 @@ window.addEventListener("load",() => {
 
 var URL_BASE = "http://localhost:8080/"
 
-function saveBoletim(cred){
+function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
     dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user,#previsao_boletim').serializeJSON();
     dados['previsao_boletim'] = parseFloat(dados['previsao_boletim']);
-    dados['token_user'] = cred.sub;
+    dados['token_user'] = tokenUser;
 
     console.log(dados);
 
@@ -96,10 +99,10 @@ function saveBoletim(cred){
 
 }
 
-function saveProblema(cred){
+function saveProblema(){
     //captura os dados do form, já colocando como um JSON
     dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user').serializeJSON();
-    dados['token_user'] = cred.sub;
+    dados['token_user'] = tokenUser;
 
     console.log(dados);
 
