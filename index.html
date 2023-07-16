@@ -10,12 +10,12 @@
 
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/style.css">
-    <script src="assets/jquery-3.6.0.min.js"></script>
-    <script src="assets/jquery.mask.min.js"></script>
-    <script src="assets/serial.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/jquery.mask.min.js"></script>
+    <script src="assets/js/serial.js"></script>
     <script src="https://accounts.google.com/gsi/client" async></script>
-    <script src="assets/functionSite.js"></script>
+    <script src="assets/js/functionSite.js"></script>
     
 
 </head>
@@ -66,6 +66,20 @@
             </div>
         </div>
     </nav>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">User</th>
+            <th scope="col">E-mail</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="tableContent">
+        </tbody>
+    </table>
+
 
     <!--Footer ou roda pé-->
     <footer class="bg-primary">

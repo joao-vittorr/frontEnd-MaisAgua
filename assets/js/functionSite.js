@@ -14,8 +14,6 @@ function jwtDecode (token) {
 //essa é a funcao que o google irá chamar quando um usuario se autenticar
 function loginCallback(resp){
     cred = jwtDecode(resp.credential);
-    //aqui voce podera ver todas as informacoes que o google retorna
-    console.log(cred);
     //salva o token inteiro, pois só é possível salvar strings no localStorage
     //cuidado, esse token é mutavel, não pode ser usado como chave no banco
     localStorage.setItem("gauth-token", resp.credential);
@@ -33,7 +31,6 @@ function logout(){
 }
 
 function setLoginStatus(cred){
-    console.log(cred);
     tokenUser = cred.sub;
     //esconde o botao de login do google
     document.querySelector(".g_id_signin").style.display = 'none';
@@ -71,9 +68,9 @@ var URL_BASE = "http://localhost:8080/"
 
 function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user,#previsao_boletim').serializeJSON();
+    dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim').serializeJSON();
     dados['previsao_boletim'] = parseFloat(dados['previsao_boletim']);
-    dados['token_user'] = tokenUser;
+    dados['token_user_boletim'] = tokenUser;
 
     console.log(dados);
 
@@ -101,8 +98,8 @@ function saveBoletim(){
 
 function saveProblema(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user').serializeJSON();
-    dados['token_user'] = tokenUser;
+    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user_problema').serializeJSON();
+    dados['token_user_problema'] = tokenUser;
 
     console.log(dados);
 
@@ -128,21 +125,29 @@ function saveProblema(){
 
 }
 
-function listar(){
+function updateList(){
 
-$.ajax(URL_BASE+"problema",{
-    method:'get',
-}).done(function(res) {
+    $.ajax(URL_BASE+"problema",{
+        method:'get',
+    }).done(function(res){
 
-    let table = $('#tableContent');
-    table.html("");
-    $(res._embedded.problema).each(function(k,el){
-        let problema = el;
-        tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>${problema.cidade_problema}</td><td>Deletar</td></tr>`);
+        let table = $('#tableContent');
+        table.html("");
+        $(res._embedded.problema).each(function(k,el){
+            let res = el;
+            tr = $(`<tr><td>Editar</td><td>${problema.tipo_problema}</td><td>${problema.desc_problema}</td><td>Deletar</td></tr>`);
+            table.append(tr);
+        })
+       
+    })
+    .fail(function(res) {
+        let table = $('#tableContent');
+        table.html("");
+        tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
         table.append(tr);
-    })
-    })
-};
-
-
-
+    });
+}
+$(function(){
+    //Sempre que carregar a página atualiza a lista
+    updateList();
+});
