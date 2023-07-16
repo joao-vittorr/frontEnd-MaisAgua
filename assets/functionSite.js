@@ -27,7 +27,8 @@ function logout(){
     localStorage.setItem("gauth-token", undefined);
     document.querySelector(".g_id_logado").innerHTML = "";
     document.querySelector(".g_id_signin").style.display = 'block';
-    document.querySelector(".g_id_logadoNavBar").innerHTML = "";
+    document.querySelector(".problemaNavBar").innerHTML = "";
+    document.querySelector(".boletimNavBar").innerHTML = "";
 
 }
 
@@ -43,16 +44,12 @@ function setLoginStatus(cred){
                 <a href='#' onclick='logout()'><img src="assets/fechar.png" alt="Sair da conta"/></a>
             </div>`
     document.querySelector(".g_id_logado").innerHTML = html;
+    //Mostra as opções de cadastrar Problema e Boletim ao usuario logado 
+    var problemaNavBar = document.getElementById('problemaNavBar');
+    problemaNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarProblema.html">Cadastrar problema</a></div>`
+    var boletimNavBar = document.getElementById('boletimNavBar');
+    boletimNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarBoletim.html">Cadastrar Boletim</a></div>`
 }
-
-
-//function setNavStatus(){
-    //esconde o botao de login do google
-//    document.querySelector(".g_id_logadoNavBar").style.display = 'none';
-//    htmlNavBar = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarProblema.html">Cadastrar problema</a></div>
-//                <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarBoletim.html">Cadastrar Boletim</a></div>`
-//    document.querySelector(".g_id_logadoNavBar").innerHTML = htmlNavBar;
-//}
 
 //ao carregar a pagina, verifica se ja esta logado
 window.addEventListener("load",() => {
@@ -63,6 +60,7 @@ window.addEventListener("load",() => {
         setLoginStatus(cred);
     }
 });
+
 
 
 // enviando dados para o back-end
