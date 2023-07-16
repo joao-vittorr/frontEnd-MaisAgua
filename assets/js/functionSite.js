@@ -129,13 +129,13 @@ function updateList(){
 
     $.ajax(URL_BASE+"problema",{
         method:'get',
-    }).done(function(res){
+    }).done(function(res) {
 
         let table = $('#tableContent');
         table.html("");
-        $(res._embedded.problema).each(function(k,el){
-            let res = el;
-            tr = $(`<tr><td>Editar</td><td>${problema.tipo_problema}</td><td>${problema.desc_problema}</td><td>Deletar</td></tr>`);
+        $(res._embedded).each(function(k,el){
+            let problema = el;
+            tr = $(`<tr><td>Editar</td><td>${problema.tipo_problema}</td><td>${problema.desc_prolema}</td><td>Deletar</td></tr>`);
             table.append(tr);
         })
        
@@ -147,6 +147,7 @@ function updateList(){
         table.append(tr);
     });
 }
+
 $(function(){
     //Sempre que carregar a página atualiza a lista
     updateList();
