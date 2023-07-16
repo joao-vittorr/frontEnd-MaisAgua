@@ -47,7 +47,7 @@ function setLoginStatus(cred){
     //Mostra as opções de cadastrar Problema e Boletim ao usuario logado 
     var problemaNavBar = document.getElementById('problemaNavBar');
     problemaNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarProblema.html">Cadastrar problema</a></div>`
-    if(tokenUser == "110955377050310839557"){
+    if(tokenUser == "110955377050310839557" || tokenUser == "114600802078895812317"){
         var boletimNavBar = document.getElementById('boletimNavBar');
         boletimNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarBoletim.html">Cadastrar Boletim</a></div>`
     }
