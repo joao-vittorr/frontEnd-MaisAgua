@@ -14,12 +14,10 @@
     <script src="assets/jquery-3.6.0.min.js"></script>
     <script src="assets/jquery.mask.min.js"></script>
     <script src="assets/serial.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="assets/functionSite.js"></script>
     
 
-    <!--google autenticação-->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
-    
 </head>
 
 <body>
@@ -27,62 +25,47 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container px-4 px-lg-0">
             <a class="navbar-brand" href="index.html"><img class="logo" src="assets/logo.png" alt="Logo mais água"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                Menu
-                <i class="fas fa-bars"></i>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> Menu <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <div class="navbar-nav ms-auto py-4 py-lg-0">
-                    <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                            href="cadastrarProblema.html">Cadastrar problema</a>
+                    <div class="nav-item">
+                        <a class="nav-link active px-lg-3 py-1 py-lg-1" href="buscarProblema.html">Consultar Problema</a>
                     </div>
-                    <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                            href="buscarProblema.html">Consultar</a>
+                    <div class="nav-item">
+                        <a class="nav-link active px-lg-3 py-1 py-lg-1" href="buscarBoletim.html">Consultar Boletim</a>
                     </div>
-                    <div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont"
-                            href="cadastrarBoletim.html">Cadastrar Boletim</a>
+                    <div id="problemaNavBar"></div>
+                    <div id="boletimNavBar"></div>
                     </div>
-                    <div class="nav-item"><div class="nav-link active px-lg-3 py-1 py-lg-1 maiorfont" id="buttonDiv"></div>
+                    <div class="nav-item">
+                        <div class="nav-link active px-lg-3 py-1 py-lg-1">
+                            <!-- configuracoes do google -->
+                            <div id="g_id_onload"
+                                data-client_id="237096676007-vfap0beu1eusvicj0t7hvr85o2l7no6b.apps.googleusercontent.com"
+                                data-context="signin"
+                                data-ux_mode="popup"
+                                data-callback="loginCallback"
+                                data-auto_prompt="false">
+                            </div>
+                            <!-- botao de login -->
+                            <div class="g_id_signin"
+                                data-type="standard"
+                                data-shape="rectangular"
+                                data-theme="outline"
+                                data-text="signin_with"
+                                data-size="large"
+                                data-logo_alignment="left">
+                            </div>
+                            <!-- local onde ira aparecer as informacoes do usuario -->
+                            <div class="g_id_logado"></div>
+                            <!--<div class="g_id_logado"></div>-->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
-    
-    <div class="container" onload="listar()">
-        <!-- Conteúdo aqui -->
-        <!--autenticação do google-->
-
-        <p id="fullName"></p>
-        <p id="sub"></p>
-        <p id="given_name"></p>
-        <p id="family_name"></p>
-        <p id="email"></p>
-        <p id="verifiedEmail"></p>
-        <img id="picture" />
-    </div>
-
-      <!--Lista de Problemas cadastrados-->
-      <div class="col-md-6">
-        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-          <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary-emphasis">World</strong>
-            <h3 class="mb-0">Featured post</h3>
-            <div class="mb-1 text-body-secondary">Nov 12</div>
-            <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">
-              Continue reading
-              <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
-            </a>
-          </div>
-          <div class="col-auto d-none d-lg-block">
-            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-          </div>
-        </div>
-      </div>
-
-    <script src="assets/people.js"></script>
 
     <!--Footer ou roda pé-->
     <footer class="bg-primary">
