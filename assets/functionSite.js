@@ -27,8 +27,8 @@ function logout(){
     localStorage.setItem("gauth-token", undefined);
     document.querySelector(".g_id_logado").innerHTML = "";
     document.querySelector(".g_id_signin").style.display = 'block';
-    document.querySelector(".problemaNavBar").innerHTML = "";
-    document.querySelector(".boletimNavBar").innerHTML = "";
+    document.getElementById('boletimNavBar').innerHTML = "";
+    document.getElementById('problemaNavBar').innerHTML = "";
 
 }
 
