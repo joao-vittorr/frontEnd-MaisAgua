@@ -65,6 +65,7 @@ window.addEventListener("load",() => {
 // enviando dados para o back-end
 
 var URL_BASE = "http://localhost:8080/"
+var URL_EDIT = null;
 
 function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
@@ -103,21 +104,25 @@ function saveProblema(){
 
     console.log(dados);
 
+    if (URL_EDIT != null) {
+        //envia para a url do objeto
+        url = URL_EDIT;
+        method = "PUT";
+    } else {
+        //caso contrário, envia para a url de salvar
+        url = URL_BASE + "problema/";
+        method = "POST";
+    }
+
     //envia para o backend
-    $.ajax(URL_BASE+"problema",{
+    $.ajax(url,{
         data:JSON.stringify(dados),
-        method:'post',
+        method:method,
         contentType: "application/json",
     }).done(function(res) {
-
-        let table = $('#tableContent');
-        table.html("");
-        $(res._embedded.problema).each(function(k,el){
-            let problema = el;
-            tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>Deletar</td></tr>`);
-            table.append(tr);
-        })
-    
+        URL_EDIT = URL_BASE + "problema/" + res.id_problema
+        
+        updateList();
     })
     .fail(function(res) {
         console.log(res);
@@ -127,16 +132,22 @@ function saveProblema(){
 
 function updateList(){
 
-    $.ajax(URL_BASE+"problema",{
+    $.ajax(URL_BASE+"problema/",{
         method:'get',
     }).done(function(res) {
-
+        
         let table = $('#tableContent');
         table.html("");
-        $(res._embedded).each(function(k,el){
-            let problema = el;
-            tr = $(`<tr><td>Editar</td><td>${problema.tipo_problema}</td><td>${problema.desc_prolema}</td><td>Deletar</td></tr>`);
-            table.append(tr);
+        $(res).each(function(k,el){
+            let res = el;
+            div = $(`<div class="card-body">
+                        <h5 class="card-title">${res.tipo_problema}</h5>
+                        <p class="card-text">${res.desc_problema}</p>
+                        <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
+                        </div>
+                        <img src="..." class="card-img-bottom" alt="...">
+                        <p class="card-text"><small class="text-body-secondary"><a href="#" onclick="edit('problema/${res.id_problema}')">Editar</a></small></p><hr/>`);
+            table.append(div);
         })
        
     })
@@ -152,3 +163,27 @@ $(function(){
     //Sempre que carregar a página atualiza a lista
     updateList();
 });
+
+
+function edit(url){
+    //Primeiro solicita as informações da pessoa ao backend
+    $.ajax(url,{
+        method:'get',
+    }).done(function(res) {
+
+        /*$.each(res,function(k, el){
+            $('#'+k).val(el);
+        });*/
+        $('#tipo_problema').val(res.tipo_problema);
+        $('#cep_problema').val(res.cep_problema);
+        $('#cidade_problema').val(res.cidade_problema);
+        $('#estado_problema').val(res.estado_problema);
+        $('#logradouro_problema').val(res.logradouro_problema);
+        $('#numero_rua_problema').val(res.numero_rua_problema);
+        $('#bairro_problema').val(res.bairro_problema);
+        $('#desc_problema').val(res.desc_problema);
+       
+    });
+    //salva a url do objeto que estou editando
+    URL_EDIT = url;
+}

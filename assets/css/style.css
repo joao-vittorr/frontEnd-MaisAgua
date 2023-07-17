@@ -80,3 +80,10 @@ footer {
     white-space: nowrap;
     width:300px;
 }
+
+.alinhandoManualmente{
+    text-align: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 20px;
+}
