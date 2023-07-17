@@ -14,8 +14,6 @@ function jwtDecode (token) {
 //essa é a funcao que o google irá chamar quando um usuario se autenticar
 function loginCallback(resp){
     cred = jwtDecode(resp.credential);
-    //aqui voce podera ver todas as informacoes que o google retorna
-    console.log(cred);
     //salva o token inteiro, pois só é possível salvar strings no localStorage
     //cuidado, esse token é mutavel, não pode ser usado como chave no banco
     localStorage.setItem("gauth-token", resp.credential);
@@ -33,7 +31,6 @@ function logout(){
 }
 
 function setLoginStatus(cred){
-    console.log(cred);
     tokenUser = cred.sub;
     //esconde o botao de login do google
     document.querySelector(".g_id_signin").style.display = 'none';
@@ -68,12 +65,13 @@ window.addEventListener("load",() => {
 // enviando dados para o back-end
 
 var URL_BASE = "http://localhost:8080/"
+var URL_EDIT = null;
 
 function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user,#previsao_boletim').serializeJSON();
+    dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim').serializeJSON();
     dados['previsao_boletim'] = parseFloat(dados['previsao_boletim']);
-    dados['token_user'] = tokenUser;
+    dados['token_user_boletim'] = tokenUser;
 
     console.log(dados);
 
@@ -101,26 +99,30 @@ function saveBoletim(){
 
 function saveProblema(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user').serializeJSON();
-    dados['token_user'] = tokenUser;
+    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user_problema').serializeJSON();
+    dados['token_user_problema'] = tokenUser;
 
     console.log(dados);
 
+    if (URL_EDIT != null) {
+        //envia para a url do objeto
+        url = URL_EDIT;
+        method = "PUT";
+    } else {
+        //caso contrário, envia para a url de salvar
+        url = URL_BASE + "problema/";
+        method = "POST";
+    }
+
     //envia para o backend
-    $.ajax(URL_BASE+"problema",{
+    $.ajax(url,{
         data:JSON.stringify(dados),
-        method:'post',
+        method:method,
         contentType: "application/json",
     }).done(function(res) {
-
-        let table = $('#tableContent');
-        table.html("");
-        $(res._embedded.problema).each(function(k,el){
-            let problema = el;
-            tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>Deletar</td></tr>`);
-            table.append(tr);
-        })
-    
+        URL_EDIT = URL_BASE + "problema/" + res.id_problema
+        
+        updateList();
     })
     .fail(function(res) {
         console.log(res);
@@ -128,21 +130,60 @@ function saveProblema(){
 
 }
 
-function listar(){
+function updateList(){
 
-$.ajax(URL_BASE+"problema",{
-    method:'get',
-}).done(function(res) {
-
-    let table = $('#tableContent');
-    table.html("");
-    $(res._embedded.problema).each(function(k,el){
-        let problema = el;
-        tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>${problema.cidade_problema}</td><td>Deletar</td></tr>`);
+    $.ajax(URL_BASE+"problema/",{
+        method:'get',
+    }).done(function(res) {
+        
+        let table = $('#tableContent');
+        table.html("");
+        $(res).each(function(k,el){
+            let res = el;
+            div = $(`<div class="card-body">
+                        <h5 class="card-title">${res.tipo_problema}</h5>
+                        <p class="card-text">${res.desc_problema}</p>
+                        <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
+                        </div>
+                        <img src="..." class="card-img-bottom" alt="...">
+                        <p class="card-text"><small class="text-body-secondary"><a href="#" onclick="edit('problema/${res.id_problema}')">Editar</a></small></p><hr/>`);
+            table.append(div);
+        })
+       
+    })
+    .fail(function(res) {
+        let table = $('#tableContent');
+        table.html("");
+        tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
         table.append(tr);
-    })
-    })
-};
+    });
+}
+
+$(function(){
+    //Sempre que carregar a página atualiza a lista
+    updateList();
+});
 
 
+function edit(url){
+    //Primeiro solicita as informações da pessoa ao backend
+    $.ajax(url,{
+        method:'get',
+    }).done(function(res) {
 
+        /*$.each(res,function(k, el){
+            $('#'+k).val(el);
+        });*/
+        $('#tipo_problema').val(res.tipo_problema);
+        $('#cep_problema').val(res.cep_problema);
+        $('#cidade_problema').val(res.cidade_problema);
+        $('#estado_problema').val(res.estado_problema);
+        $('#logradouro_problema').val(res.logradouro_problema);
+        $('#numero_rua_problema').val(res.numero_rua_problema);
+        $('#bairro_problema').val(res.bairro_problema);
+        $('#desc_problema').val(res.desc_problema);
+       
+    });
+    //salva a url do objeto que estou editando
+    URL_EDIT = url;
+}
