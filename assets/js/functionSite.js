@@ -97,64 +97,81 @@ function saveBoletim(){
 
 }
 
-function saveProblema(){
-    //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user_problema').serializeJSON();
-    dados['token_user_problema'] = tokenUser;
-
-    console.log(dados);
-
-    if (URL_EDIT != null) {
-        //envia para a url do objeto
-        url = URL_EDIT;
-        method = "PUT";
-    } else {
-        //caso contrário, envia para a url de salvar
-        url = URL_BASE + "problema/";
-        method = "POST";
+function saveProblema() {
+    const fileInput = document.getElementById('foto');
+  
+    const file = fileInput.files[0];
+    if (!file) {
+      alert('Selecione uma imagem.');
+      return;
     }
+  
+    convertImageToString(file)
+      .then(base64String => {
+        // Envie a string base64 para o servidor, salve em um campo oculto no formulário, etc.
+        console.log('String base64:', base64String);
+  
+        //captura os dados do form, já colocando como um JSON
+        dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user_problema').serializeJSON();
+        dados['token_user_problema'] = tokenUser;
+        dados['foto'] = base64String; // Atribui a string base64 no campo 'foto'
+  
+        console.log(dados);
+  
+        if (URL_EDIT != null) {
+          //envia para a url do objeto
+          url = URL_EDIT;
+          method = "PUT";
+        } else {
+          //caso contrário, envia para a url de salvar
+          url = URL_BASE + "problema/";
+          method = "POST";
+        }
+  
+        //envia para o backend
+        $.ajax(url, {
+          data: JSON.stringify(dados),
+          method: method,
+          contentType: "application/json",
+        }).done(function (res) {
+          URL_EDIT = URL_BASE + "problema/" + res.id_problema
+  
+          updateList();
+        }).fail(function (res) {
+          console.log(res);
+        });
+  
+      })
+      .catch(error => {
+        console.error('Erro ao converter imagem:', error);
+      });
+  }
 
-    //envia para o backend
-    $.ajax(url,{
-        data:JSON.stringify(dados),
-        method:method,
-        contentType: "application/json",
-    }).done(function(res) {
-        URL_EDIT = URL_BASE + "problema/" + res.id_problema
-        
-        updateList();
-    })
-    .fail(function(res) {
-        console.log(res);
-    });  
-
-}
-
-function updateList(){
-
-    $.ajax(URL_BASE+"problema/",{
-        method:'get',
-    }).done(function(res) {
-        
+  function updateList() {
+    $.ajax(URL_BASE + "problema/", {
+        method: 'get',
+    }).done(function (res) {
         let table = $('#tableContent');
         table.html("");
-        $(res).each(function(k,el){
+        $(res).each(function (k, el) {
             let res = el;
-            div = $(`<div class="card-body">
-                        <h5 class="card-title">${res.tipo_problema}</h5>
-                        <p class="card-text">${res.desc_problema}</p>
-                        <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
-                        </div>
-                        <img src="..." class="card-img-bottom" alt="...">
-                        <p class="card-text"><small class="text-body-secondary"><a href="#" onclick="edit('problema/${res.id_problema}')">Editar</a></small></p><hr/>`);
+            const div = $(`<div class="card-body">
+                            <h5 class="card-title">${res.tipo_problema}</h5>
+                            <p class="card-text">${res.desc_problema}</p>
+                            <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
+                          </div>`);
+            const img = $('<img>'); // Criar um elemento <img>
+            img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
+            img.addClass('card-img-bottom'); // Adicionar a classe para estilização (se necessário)
+            div.append(img); // Adicionar a imagem à div
+            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="edit('problema/${res.id_problema}')">Editar</a></small></p><hr/>`);
             table.append(div);
         })
-       
-    })
-    .fail(function(res) {
+
+    }).fail(function (res) {
         let table = $('#tableContent');
         table.html("");
-        tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+        const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
         table.append(tr);
     });
 }
@@ -186,4 +203,57 @@ function edit(url){
     });
     //salva a url do objeto que estou editando
     URL_EDIT = url;
+}
+
+function convertImageToString(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function () {
+            const arrayBuffer = reader.result;
+            const byteArray = new Uint8Array(arrayBuffer);
+            const binaryString = byteArray.reduce((data, byte) => data + String.fromCharCode(byte), '');
+
+            resolve(btoa(binaryString)); // Converte para base64
+        };
+
+        reader.onerror = function (error) {
+            reject(error);
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+function convertStringToImage(base64String) {
+    const img = document.createElement('img');
+    img.src = `data:image/png;base64,${base64String}`;
+    return img;
+}
+
+function convertImageToString(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        const arrayBuffer = reader.result;
+        const byteArray = new Uint8Array(arrayBuffer);
+        const binaryString = byteArray.reduce((data, byte) => data + String.fromCharCode(byte), '');
+
+        resolve(btoa(binaryString)); // Converte para base64
+      };
+
+      reader.onerror = function (error) {
+        reject(error);
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+  }
+  function resetFormulario() {
+    // Obtém o formulário pelo ID
+    const formulario = document.getElementById('form');
+
+    // Reseta o formulário para o estado inicial
+    formulario.reset();
 }
