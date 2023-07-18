@@ -186,28 +186,27 @@ $(function(){
 });
 
 
-function edit(url){
-    //Primeiro solicita as informações da pessoa ao backend
-    $.ajax(url,{
-        method:'get',
+function edit(url) {
+    url = URL_BASE + url
+    // Primeiro, solicita as informações do problema ao backend
+    $.ajax(url, {
+      method: 'GET',
     }).done(function(res) {
-
-        /*$.each(res,function(k, el){
-            $('#'+k).val(el);
-        });*/
-        $('#tipo_problema').val(res.tipo_problema);
-        $('#cep_problema').val(res.cep_problema);
-        $('#cidade_problema').val(res.cidade_problema);
-        $('#estado_problema').val(res.estado_problema);
-        $('#logradouro_problema').val(res.logradouro_problema);
-        $('#numero_rua_problema').val(res.numero_rua_problema);
-        $('#bairro_problema').val(res.bairro_problema);
-        $('#desc_problema').val(res.desc_problema);
-       
+      // Preenche os campos do formulário com os dados retornados
+      $('#tipo_problema').val(res.tipo_problema);
+      $('#cep_problema').val(res.cep_problema);
+      $('#cidade_problema').val(res.cidade_problema);
+      $('#estado_problema').val(res.estado_problema);
+      $('#logradouro_problema').val(res.logradouro_problema);
+      $('#numero_rua_problema').val(res.numero_rua_problema);
+      $('#bairro_problema').val(res.bairro_problema);
+      $('#desc_problema').val(res.desc_problema);
+    
+      // Armazena a URL do objeto que está sendo editado
+      URL_EDIT = url;
     });
-    //salva a url do objeto que estou editando
-    URL_EDIT = url;
-}
+  }
+  
 
 function convertImageToString(file) {
     return new Promise((resolve, reject) => {

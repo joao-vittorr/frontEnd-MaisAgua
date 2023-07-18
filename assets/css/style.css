@@ -82,6 +82,7 @@ footer {
 }
 
 .alinhandoManualmente{
+    align-items: center;
     text-align: center;
     margin-left: 10%;
     margin-right: 10%;
@@ -92,4 +93,5 @@ footer {
     width: 15em;
     height: 15em;
     border-radius: 10px;
+    text-align: center;
 }
