@@ -87,3 +87,9 @@ footer {
     margin-right: 10%;
     margin-top: 20px;
 }
+
+.img-postagem{
+    width: 15em;
+    height: 15em;
+    border-radius: 10px;
+}

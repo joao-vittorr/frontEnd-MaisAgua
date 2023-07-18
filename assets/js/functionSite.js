@@ -155,14 +155,18 @@ function saveProblema() {
         table.html("");
         $(res).each(function (k, el) {
             let res = el;
-            const div = $(`<div class="card-body">
-                            <h5 class="card-title">${res.tipo_problema}</h5>
-                            <p class="card-text">${res.desc_problema}</p>
-                            <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
-                          </div>`);
+            const div = $(`<div class="row g-0">
+                                <div class="col-md-8">
+                                <div class="card-body">
+                                <h5 class="card-title">${res.tipo_problema}</h5>
+                                <p class="card-text">${res.desc_problema}</p>
+                                <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
+                                </div>
+                            </div>`);
             const img = $('<img>'); // Criar um elemento <img>
             img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
-            img.addClass('card-img-bottom'); // Adicionar a classe para estilização (se necessário)
+            img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
+            img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
             div.append(img); // Adicionar a imagem à div
             div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="edit('problema/${res.id_problema}')">Editar</a></small></p><hr/>`);
             table.append(div);
