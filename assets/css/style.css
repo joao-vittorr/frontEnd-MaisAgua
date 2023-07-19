@@ -82,7 +82,6 @@ footer {
 }
 
 .alinhandoManualmente{
-    align-items: center;
     text-align: center;
     margin-left: 10%;
     margin-right: 10%;
@@ -94,4 +93,8 @@ footer {
     height: 15em;
     border-radius: 10px;
     text-align: center;
+}
+.configuraBotao{
+    color: white;
+    text-decoration: none;
 }

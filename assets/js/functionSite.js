@@ -170,8 +170,8 @@ function saveProblema() {
             img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
             img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
             div.append(img); // Adicionar a imagem à div
-            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="editProblema('problema/${res.id_problema}')">Editar</a></small>
-                        <small class="text-body-secondary"><a href="#" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></small></p><hr/>`);
+            div.append(`<button type="button" class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
+                        <button type="button" class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></button>`);
             table.append(div);
         })
 
@@ -199,8 +199,8 @@ function updateListBoletim() {
                                 <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
                                 </div>
                             </div>`);
-            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="editboletim('boletim/${res.id_boletim}')">Editar</a></small>
-                        <small class="text-body-secondary"><a href="#" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></small></p><hr/>`);
+            div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editboletim('boletim/${res.id_boletim}')">Editar</a></button>
+                        <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
             table.append(div);
         })
 
@@ -211,6 +211,112 @@ function updateListBoletim() {
         table.append(tr);
     });
 }
+
+$(document).ready(function() {
+    $('#formBuscaProblema').submit(function(event) {
+      event.preventDefault(); // Impede o envio padrão do formulário
+  
+      const parametro_problema = $('#tipo_problema').val(); // Obtém o valor do campo de busca
+  
+      buscarProblema(parametro_problema); // Chama a função buscar com o valor do parâmetro
+    });
+  });
+
+  var tipo_do_problema;
+
+  function buscarProblema(parametro_problema) {
+    tipo_do_problema = parametro_problema; // Atribui o valor do parâmetro à variável tipo_do_problema
+  
+    $.ajax(URL_BASE + "problema/", {
+      method: 'get',
+    }).done(function (res) {
+      let table = $('#tableContentProblemaBuscar');
+      table.html("");
+  
+      $(res).each(function (k, el) {
+        let res = el;
+  
+        // Realiza a comparação entre tipo_do_problema e res.tipo_problema
+        if (tipo_do_problema === res.tipo_problema) {
+          const div = $(`<div class="row g-0">
+                            <div class="col-md-8">
+                              <div class="card-body">
+                                <h5 class="card-title">${res.tipo_problema}</h5>
+                                <p class="card-text">${res.desc_problema}</p>
+                                <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
+                              </div>
+                            </div>
+                          </div>`);
+          const img = $('<img>'); // Criar um elemento <img>
+          img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
+          img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
+          img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
+          div.append(img); // Adicionar a imagem à div
+          div.append(`<button type="button" class="btn btn-primary" onclick="editProblema('problema/${res.id_problema}')">Editar</button>
+                      <button type="button" class="btn btn-danger" onclick="delProblema('problema/${res.id_problema}')">Deletar</button>`);
+          table.append(div);
+        }
+      });
+  
+      parametro_boletim = '';
+  
+    }).fail(function (res) {
+      let table = $('#tableContentProblemaBuscar');
+      table.html("");
+      const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+      table.append(tr);
+    });
+  }
+
+  $(document).ready(function() {
+    $('#formBuscaBoletim').submit(function(event) {
+      event.preventDefault(); // Impede o envio padrão do formulário
+  
+      const parametro_boletim = $('#tipo_problema_boletim').val(); // Obtém o valor do campo de busca
+  
+      buscarBoletim(parametro_boletim); // Chama a função buscar com o valor do parâmetro
+    });
+  });
+
+  var tipo_do_problema;
+
+  function buscarBoletim(parametro_boletim) {
+    tipo_do_problema = parametro_boletim; // Atribui o valor do parâmetro à variável tipo_do_problema
+  
+    $.ajax(URL_BASE + "boletim/", {
+      method: 'get',
+    }).done(function (res) {
+      let table = $('#tableContentBoletimBuscar');
+      table.html("");
+  
+      $(res).each(function (k, el) {
+        let res = el;
+  
+        // Realiza a comparação entre tipo_do_problema e res.tipo_problema
+        if (tipo_do_problema === res.tipo_problema_boletim) {
+            const div = $(`<div class="row g-0">
+            <div class="col-md-8">
+            <div class="card-body">
+            <h5 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
+            <p class="card-text">${res.desc_boletim}</p>
+            <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+            </div>
+            </div>`);
+            div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editboletim('boletim/${res.id_boletim}')">Editar</a></button>
+                <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
+            table.append(div);
+        }
+      });
+  
+      parametro_boletim = '';
+  
+    }).fail(function (res) {
+      let table = $('#tableContentBoletimBuscar');
+      table.html("");
+      const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+      table.append(tr);
+    });
+  }
 
 $(function(){
     //Sempre que carregar a página atualiza a lista
