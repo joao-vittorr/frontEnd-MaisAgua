@@ -170,7 +170,8 @@ function saveProblema() {
             img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
             img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
             div.append(img); // Adicionar a imagem à div
-            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="editProblema('problema/${res.id_problema}')">Editar</a></small></p><hr/>`);
+            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="editProblema('problema/${res.id_problema}')">Editar</a></small>
+                        <small class="text-body-secondary"><a href="#" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></small></p><hr/>`);
             table.append(div);
         })
 
@@ -198,7 +199,8 @@ function updateListBoletim() {
                                 <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
                                 </div>
                             </div>`);
-            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="editboletim('boletim/${res.id_boletim}')">Editar</a></small></p><hr/>`);
+            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="editboletim('boletim/${res.id_boletim}')">Editar</a></small>
+                        <small class="text-body-secondary"><a href="#" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></small></p><hr/>`);
             table.append(div);
         })
 
@@ -257,7 +259,43 @@ function editboletim(url) {
       URL_EDIT = url;
     });
 }
-  
+
+function delProblema(url){
+    if (confirm("Deseja realmente deletar esse registro?")){
+        //envia para o backend
+        $.ajax({
+            url: URL_BASE + url, // URL do endpoint da API
+            method: 'DELETE', // Método HTTP DELETE
+          }).done(function(res) {
+            console.log('Objeto deletado com sucesso');
+            // Faça algo após a exclusão do objeto
+            updateListProblema();
+          }).fail(function(error) {
+            console.error('Erro ao deletar objeto:', error);
+            // Lida com possíveis erros na exclusão do objeto
+            console.log(res);
+          });
+    }
+}
+
+function delBoletim(url){
+    if (confirm("Deseja realmente deletar esse registro?")){
+        //envia para o backend
+        $.ajax({
+            url: URL_BASE + url, // URL do endpoint da API
+            method: 'DELETE', // Método HTTP DELETE
+          }).done(function(res) {
+            console.log('Objeto deletado com sucesso');
+            // Faça algo após a exclusão do objeto
+            updateListBoletim();
+          }).fail(function(error) {
+            console.error('Erro ao deletar objeto:', error);
+            // Lida com possíveis erros na exclusão do objeto
+            console.log(res);
+          });
+    }
+}
+
 
 function convertImageToString(file) {
     return new Promise((resolve, reject) => {
