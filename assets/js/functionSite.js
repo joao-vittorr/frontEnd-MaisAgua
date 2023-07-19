@@ -69,31 +69,33 @@ var URL_EDIT = null;
 
 function saveBoletim(){
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim').serializeJSON();
-    dados['previsao_boletim'] = parseFloat(dados['previsao_boletim']);
+    dados = $('#tipo_problema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim').serializeJSON();
     dados['token_user_boletim'] = tokenUser;
 
     console.log(dados);
 
-    //envia para o backend
-    $.ajax(URL_BASE+"boletim",{
-        data:JSON.stringify(dados),
-        method:'post',
-        contentType: "application/json",
-    }).done(function(res) {
+    if (URL_EDIT != null) {
+        //envia para a url do objeto
+        url = URL_EDIT;
+        method = "PUT";
+      } else {
+        //caso contrário, envia para a url de salvar
+        url = URL_BASE + "boletim/";
+        method = "POST";
+      }
 
-        let table = $('#tableContent');
-        table.html("");
-        $(res._embedded.problema).each(function(k,el){
-            let problema = el;
-            tr = $(`<tr><td>Editar</td><td>${problema.logradoudo_problema}</td><td>Deletar</td></tr>`);
-            table.append(tr);
-        })
-    
-    })
-    .fail(function(res) {
+    //envia para o backend
+    $.ajax(url, {
+        data: JSON.stringify(dados),
+        method: method,
+        contentType: "application/json",
+      }).done(function (res) {
+        URL_EDIT = URL_BASE + "boletim/" + res.id_boletim
+
+        updateListBoletim();
+      }).fail(function (res) {
         console.log(res);
-    });  
+      });
 
 }
 
@@ -136,7 +138,7 @@ function saveProblema() {
         }).done(function (res) {
           URL_EDIT = URL_BASE + "problema/" + res.id_problema
   
-          updateList();
+          updateListProblema();
         }).fail(function (res) {
           console.log(res);
         });
@@ -147,11 +149,11 @@ function saveProblema() {
       });
   }
 
-  function updateList() {
+  function updateListProblema() {
     $.ajax(URL_BASE + "problema/", {
         method: 'get',
     }).done(function (res) {
-        let table = $('#tableContent');
+        let table = $('#tableContentProblema');
         table.html("");
         $(res).each(function (k, el) {
             let res = el;
@@ -168,12 +170,40 @@ function saveProblema() {
             img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
             img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
             div.append(img); // Adicionar a imagem à div
-            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="edit('problema/${res.id_problema}')">Editar</a></small></p><hr/>`);
+            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="editProblema('problema/${res.id_problema}')">Editar</a></small></p><hr/>`);
             table.append(div);
         })
 
     }).fail(function (res) {
-        let table = $('#tableContent');
+        let table = $('#tableContentProblema');
+        table.html("");
+        const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+        table.append(tr);
+    });
+}
+
+function updateListBoletim() {
+    $.ajax(URL_BASE + "boletim/", {
+        method: 'get',
+    }).done(function (res) {
+        let table = $('#tableContentBoletim');
+        table.html("");
+        $(res).each(function (k, el) {
+            let res = el;
+            const div = $(`<div class="row g-0">
+                                <div class="col-md-8">
+                                <div class="card-body">
+                                <h5 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
+                                <p class="card-text">${res.desc_boletim}</p>
+                                <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+                                </div>
+                            </div>`);
+            div.append(`<p class="card-text"><small class="text-body-secondary"><a href="#" onclick="editboletim('boletim/${res.id_boletim}')">Editar</a></small></p><hr/>`);
+            table.append(div);
+        })
+
+    }).fail(function (res) {
+        let table = $('#tableContentBoletim');
         table.html("");
         const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
         table.append(tr);
@@ -182,11 +212,12 @@ function saveProblema() {
 
 $(function(){
     //Sempre que carregar a página atualiza a lista
-    updateList();
+    updateListProblema();
+    updateListBoletim();
 });
 
 
-function edit(url) {
+function editProblema(url) {
     url = URL_BASE + url
     // Primeiro, solicita as informações do problema ao backend
     $.ajax(url, {
@@ -205,7 +236,27 @@ function edit(url) {
       // Armazena a URL do objeto que está sendo editado
       URL_EDIT = url;
     });
-  }
+}
+function editboletim(url) {
+    url = URL_BASE + url
+    // Primeiro, solicita as informações do problema ao backend
+    $.ajax(url, {
+      method: 'GET',
+    }).done(function(res) {
+      // Preenche os campos do formulário com os dados retornados
+      $('#tipo_problema_boletim').val(res.tipo_problema_boletim);
+      $('#cep_boletim').val(res.cep_boletim);
+      $('#cidade_boletim').val(res.cidade_boletim);
+      $('#estado_boletim').val(res.estado_boletim);
+      $('#logradouro_boletim').val(res.logradouro_boletim);
+      $('#previsao_boletim').val(res.previsao_boletim);
+      $('#bairro_boletim').val(res.bairro_boletim);
+      $('#desc_boletim').val(res.desc_boletim);
+    
+      // Armazena a URL do objeto que está sendo editado
+      URL_EDIT = url;
+    });
+}
   
 
 function convertImageToString(file) {
