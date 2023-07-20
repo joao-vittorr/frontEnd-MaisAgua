@@ -102,8 +102,6 @@ function saveBoletim(){
 
  
   if (formValido) {
-    // Se todos os campos estão válidos, enviar o formulário
-    document.getElementById("formBoletim").submit();
 
     //captura os dados do form, já colocando como um JSON
     dados = $('#tipo_problema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim, #previsao_boletim').serializeJSON();
@@ -382,10 +380,6 @@ function saveProblema() {
   });
 
   if (formValido) {
-      // Se todos os campos estão válidos, enviar o formulário
-      document.getElementById("formProblema").submit();
-  
-
 
   const fileInput = document.getElementById('foto');
   const file = fileInput.files[0];
@@ -393,8 +387,6 @@ function saveProblema() {
 
   convertImageToString(file)
     .then(base64String => {
-      // Envie a string base64 para o servidor, salve em um campo oculto no formulário, etc.
-      console.log('String base64:', base64String);
 
       //captura os dados do form, já colocando como um JSON
       dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user_problema').serializeJSON();
@@ -430,6 +422,9 @@ function saveProblema() {
     .catch(error => {
       console.error('Erro ao converter imagem:', error);
     });
+
+    // Se todos os campos estão válidos, enviar o formulário
+    //document.getElementById("formProblema").submit();
   }
 }
 
