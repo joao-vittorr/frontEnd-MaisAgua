@@ -57,6 +57,8 @@ function setLoginStatus(cred){
         var boletimNavBar = document.getElementById('boletimNavBar');
         boletimNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarBoletim.html">Cadastrar Boletim</a></div>`
     }
+  updateListUserProblema();
+  updateListUserBoletim();
 }
 
 //ao carregar a pagina, verifica se ja esta logado
@@ -155,39 +157,6 @@ function editBoletim(url) {
       URL_EDIT = url;
     });
 }
-  
-function updateListBoletimCadastar() {
-  $.ajax(URL_BASE + "boletim/", {
-    method: 'get',
-  }).done(function (res) {
-    let table = $('#tabelaCadastrarBoletim');
-    table.html("");
-    $(res).each(function (k, el) {
-      let res = el;
-      const div = $(`<div class="row g-0">
-                          <div class="col-md-8">
-                          <div class="card-body">
-                          <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
-                          <p class="card-text">${res.desc_boletim}</p>
-                          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
-                          </div>
-                      </div>`);
-
-      if (tokenUser === res.token_user_boletim) {
-        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
-                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
-      }
-      div.append(`</hr>`);
-      table.append(div);
-    });
-
-  }).fail(function (res) {
-    let table = $('#tabelaCadastrarBoletim');
-    table.html("");
-    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
-    table.append(tr);
-  });
-}
 
 function updateListBoletim() {
   $.ajax(URL_BASE + "boletim/", {
@@ -221,7 +190,71 @@ function updateListBoletim() {
     table.append(tr);
   });
 }
-  
+ 
+function updateListBoletim() {
+  $.ajax(URL_BASE + "boletim/", {
+    method: 'get',
+  }).done(function (res) {
+    let table = $('#tableContentBoletimHome');
+    table.html("");
+    $(res).each(function (k, el) {
+      let res = el;
+      const div = $(`<div class="row g-0">
+                          <div class="col-md-8">
+                          <div class="card-body">
+                          <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
+                          <p class="card-text">${res.desc_boletim}</p>
+                          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+                          </div>
+                      </div>`);
+      div.append(`</hr>`);
+      table.append(div);
+    });
+
+  }).fail(function (res) {
+    let table = $('#tableContentBoletimHome');
+    table.html("");
+    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    table.append(tr);
+  });
+}
+
+function updateListUserBoletim() {
+  $.ajax(URL_BASE + "boletim/", {
+    method: 'get',
+  }).done(function (res) {
+    let table = $('#tableContentBoletim');
+    table.html("");
+
+    // Filtrar os problemas relevantes ao tokenUser usando Array.filter()
+    const boletimUsuario = res.filter((res) => res.token_user_boletim === tokenUser);
+
+    boletimUsuario.forEach(function (res) {
+      const div = $(`<div class="row g-0">
+                          <div class="col-md-8">
+                          <div class="card-body">
+                          <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
+                          <p class="card-text">${res.desc_boletim}</p>
+                          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+                          </div>
+                      </div>`);
+
+      if (tokenUser === res.token_user_boletim) {
+        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
+                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
+      }
+      div.append(`</hr>`);
+      table.append(div);
+    });
+
+  }).fail(function (res) {
+    let table = $('#tableContentBoletim');
+    table.html("");
+    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    table.append(tr);
+  });
+}
+
 function delBoletim(url){
   if (confirm("Deseja realmente deletar esse registro?")){
     //envia para o backend
@@ -370,43 +403,6 @@ function saveProblema() {
 }
 
 function updateListProblema() {
-    $.ajax(URL_BASE + "problema/", {
-        method: 'get',
-    }).done(function (res) {
-        let table = $('#tableContentProblema');
-        table.html("");
-        $(res).each(function (k, el) {
-            let res = el;
-            const div = $(`<div class="row g-0">
-                                <div class="col-md-8">
-                                <div class="card-body">
-                                <h5 class="card-title">Problema sobre: ${res.tipo_problema}</h5>
-                                <p class="card-text">${res.desc_problema}</p>
-                                <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
-                                </div>
-                            </div>`);
-            const img = $('<img>'); // Criar um elemento <img>
-            img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
-            img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
-            img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
-            div.append(img); // Adicionar a imagem à div
-            if (tokenUser === res.token_user_problema) {
-              div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
-                          <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('boletim/${res.id_problema}')">Deletar</a></button>`);
-            }
-            div.append(`</hr>`);
-            table.append(div);
-        })
-
-    }).fail(function (res) {
-        let table = $('#tableContentProblema');
-        table.html("");
-        const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
-        table.append(tr);
-    });
-}
-
-function updateListProblema() {
   $.ajax(URL_BASE + "problema/", {
       method: 'get',
   }).done(function (res) {
@@ -427,10 +423,6 @@ function updateListProblema() {
           img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
           img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
           div.append(img); // Adicionar a imagem à div
-          if (tokenUser === res.token_user_problema) {
-            div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
-                        <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('boletim/${res.id_problema}')">Deletar</a></button>`);
-          }
           div.append(`</hr>`);
           table.append(div);
       })
@@ -440,6 +432,50 @@ function updateListProblema() {
       table.html("");
       const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
       table.append(tr);
+  });
+}
+
+function updateListUserProblema() {
+  $.ajax(URL_BASE + "problema/", {
+    method: 'get',
+  }).done(function (res) {
+    let table = $('#tableContentProblema');
+    table.html("");
+
+    // Filtrar os problemas relevantes ao tokenUser usando Array.filter()
+    const problemasUsuario = res.filter((res) => res.token_user_problema === tokenUser);
+
+    problemasUsuario.forEach(function (res) {
+      const div = $(`<div class="row g-0">
+                        <div class="col-md-8">
+                          <div class="card-body">
+                            <h5 class="card-title">Problema sobre: ${res.tipo_problema}</h5>
+                            <p class="card-text">${res.desc_problema}</p>
+                            <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
+                          </div>
+                        </div>
+                      </div>`);
+
+      const img = $('<img>'); // Criar um elemento <img>
+      img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
+      img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
+      img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
+      div.append(img); // Adicionar a imagem à div
+
+      if (tokenUser === res.token_user_problema) {
+        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
+                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></button>`);
+      }
+
+      div.append(`<hr>`);
+      table.append(div);
+    });
+
+  }).fail(function (res) {
+    let table = $('#tableContentProblema');
+    table.html("");
+    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    table.append(tr);
   });
 }
 
