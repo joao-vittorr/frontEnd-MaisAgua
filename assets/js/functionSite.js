@@ -334,6 +334,30 @@ function buscarBoletim(parametro_boletim) {
   }
 }
 
+function resetFormulario() {
+  // Limpar todos os campos do formulário
+  document.getElementById("formBoletim").reset();
+
+  // Limpar as classes de feedback de erro
+  var camposInvalidos = document.querySelectorAll(".is-invalid");
+  camposInvalidos.forEach(function (campo) {
+      campo.classList.remove("is-invalid");
+  });
+
+  // Limpar as classes de feedback de sucesso
+  var camposValidos = document.querySelectorAll(".is-valid");
+  camposValidos.forEach(function (campo) {
+      campo.classList.remove("is-valid");
+  });
+
+  // Esconder as mensagens de feedback de erro
+  var feedbacks = document.querySelectorAll(".invalid-feedback");
+  feedbacks.forEach(function (feedback) {
+      feedback.style.display = "none";
+  });
+}
+
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function saveProblema() {
@@ -672,28 +696,8 @@ function resetFormulario() {
       feedback.style.display = "none";
   });
 }
-function resetFormulario() {
-  // Limpar todos os campos do formulário
-  document.getElementById("formBoletim").reset();
 
-  // Limpar as classes de feedback de erro
-  var camposInvalidos = document.querySelectorAll(".is-invalid");
-  camposInvalidos.forEach(function (campo) {
-      campo.classList.remove("is-invalid");
-  });
-
-  // Limpar as classes de feedback de sucesso
-  var camposValidos = document.querySelectorAll(".is-valid");
-  camposValidos.forEach(function (campo) {
-      campo.classList.remove("is-valid");
-  });
-
-  // Esconder as mensagens de feedback de erro
-  var feedbacks = document.querySelectorAll(".invalid-feedback");
-  feedbacks.forEach(function (feedback) {
-      feedback.style.display = "none";
-  });
-}
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 
 $(function(){
     //Sempre que carregar a página atualiza a lista
