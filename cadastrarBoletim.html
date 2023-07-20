@@ -23,7 +23,7 @@
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container px-4 px-lg-0">
-            <a class="navbar-brand" href="index.html"><img class="logo" src="assets/logo.png" alt="Logo mais água"></a>
+            <a class="navbar-brand" href="index.html"><img class="logo" src="assets/imagens/logo.png" alt="Logo mais água"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> Menu <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -75,41 +75,50 @@
 
           <form class="row g-3" id="form">
             <div class="col-md-12">
-              <label for="tipo_problema_boletim">Qual é o seu problema?</label>
+              <label for="tipo_problema_boletim">Qual é o Tipo de Comunicação?</label>
               <select class="form-control" id="tipo_problema_boletim" name="tipo_problema_boletim">
+                <option value="">Selecione</option>
                 <option value="Vazamento">Vazamento</option>
                 <option value="Falta de Água">Falta de Água</option>
                 <option value="Pressão da Água">Pressão da Água</option>
                 <option value="Manutenção">Manutenção</option>
               </select>
+              <div class="invalid-feedback">Por favor, selecione o Tipo da Comunicação.</div>
             </div>
             <div class="col-md-2">
               <label label for="cep_boletim" class="form-label">CEP</label>
               <input type="text" class="form-control" id="cep_boletim" name="cep_boletim" placeholder="59215000"/>
+              <div class="invalid-feedback">Por favor, insira um CEP.</div>
             </div>
             <div class="col-md-5">
               <label for="cidade_boletim" class="form-label">Cidade</label>
               <input type="text" class="form-control" id="cidade_boletim" name="cidade_boletim" placeholder="Nova Cruz"/>
+              <div class="invalid-feedback">Por favor, insira uma Cidade.</div>
             </div>
             <div class="col-5">
               <label for="logradouro_boletim" class="form-label">Estado</label>
               <input type="text" class="form-control" id="estado_boletim" name="estado_boletim" placeholder="Rio Grande do Norte"/>
+              <div class="invalid-feedback">Por favor, insira um Estado.</div>
             </div>
             <div class="col-7">
               <label for="logradouro_boletim" class="form-label">Logradouro</label>
               <input type="text" class="form-control" id="logradouro_boletim" name="logradouro_boletim" placeholder="Rua São Joaquin"/>
+              <div class="invalid-feedback">Por favor, insira um Logradouro.</div>
             </div>
             <div class="col-5">
               <label for="bairro_boletim" class="form-label">Bairro</label>
               <input type="text" class="form-control" id="bairro_boletim" name="bairro_boletim" placeholder="Boa Vista"/>
+              <div class="invalid-feedback">Por favor, insira um Bairro.</div>
             </div>
             <div class="col-12 p-1">
               <label for="desc_boletim" class="form-label">Descrição</label>
               <textarea class="form-control" id="desc_boletim" name="desc_boletim" rows="3"></textarea>
+              <div class="invalid-feedback">Por favor, insira uma Descrição do Boletim.</div>
             </div>            
             <div class="col-md-3">
               <label for="previsao_boletim" class="form-label">Previsão</label>
               <input type="text" class="form-control" id="previsao_boletim" name="previsao_boletim" placeholder=""/>
+              <div class="invalid-feedback">Por favor, insira a quantidade horas.</div>
             </div>
           </form>
           <div class="row p-3">

@@ -24,7 +24,7 @@
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container px-4 px-lg-0">
-            <a class="navbar-brand" href="index.html"><img class="logo" src="assets/logo.png" alt="Logo mais água"></a>
+            <a class="navbar-brand" href="index.html"><img class="logo" src="assets/imagens/logo.png" alt="Logo mais água"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> Menu <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -73,47 +73,58 @@
     <h1 class="centralizaTitulo" >Cadastrar Problema</h1>
 
     <div class="container card col-sm-15 text-start">
-        <form class="row g-3" id="form">
+
+         <form class="row g-3" id="form">
           <div class="col-md-12">
             <label for="tipo_problema">Qual é o seu problema?</label>
-            <select class="form-control" id="tipo_problema" name="tipo_problema">
+            <select class="form-control" id="tipo_problema" name="tipo_problema" required>
+              <option value="">Selecione</option>
               <option value="Vazamento">Vazamento</option>
               <option value="Falta de Água">Falta de Água</option>
               <option value="Pressão da Água">Pressão da Água</option>
               <option value="Manutenção">Manutenção</option>
             </select>
+            <div class="invalid-feedback">Por favor, selecione o Tipo do Problema.</div>
           </div>
           <div class="mb-3 mt-3">
             <label for="foto" class="form-label">Anexar foto</label>
-            <input class="form-control" type="file" id="foto" name="foto">
+            <input class="form-control" type="file" id="foto" name="foto" required/>
+            <div class="invalid-feedback">Por favor, anexe uma foto.</div>
           </div>
           <div class="col-md-2">
             <label for="cep_problema" class="form-label">CEP</label>
-            <input type="text" class="form-control" id="cep_problema" name="cep_problema" placeholder="59215000"/>
+            <input type="text" class="form-control" id="cep_problema" name="cep_problema" placeholder="59215000" required/>
+            <div class="invalid-feedback">Por favor, insira um CEP.</div>
           </div>
           <div class="col-md-5">
             <label for="cidade_problema" class="form-label">Cidade</label>
-            <input type="text" class="form-control" id="cidade_problema" name="cidade_problema" placeholder="Nova Cruz"/>
+            <input type="text" class="form-control" id="cidade_problema" name="cidade_problema" placeholder="Nova Cruz" required/>
+            <div class="invalid-feedback">Por favor, insira uma Cidade.</div>
           </div>
           <div class="col-5">
             <label for="estado_problema" class="form-label">Estado</label>
-            <input type="text" class="form-control" id="estado_problema" name="estado_problema" placeholder="Rio Grande do Norte"/>
+            <input type="text" class="form-control" id="estado_problema" name="estado_problema" placeholder="Rio Grande do Norte" required/>
+            <div class="invalid-feedback">Por favor, insira um Estado.</div>
           </div>
           <div class="col-7">
             <label for="logradouro_problema" class="form-label">Logradouro</label>
-            <input type="text" class="form-control" id="logradouro_problema" name="logradouro_problema" placeholder=""/>
+            <input type="text" class="form-control" id="logradouro_problema" name="logradouro_problema" placeholder="" required/>
+            <div class="invalid-feedback">Por favor, insira um Logradouro.</div>
           </div>
           <div class="col-1">
             <label for="numero_rua_problema" class="form-label">Número</label>
-            <input type="text" class="form-control" id="numero_rua_problema" name="numero_rua_problema" placeholder=""/>
+            <input type="text" class="form-control" id="numero_rua_problema" name="numero_rua_problema" placeholder="" required/>
+            <div class="invalid-feedback">Por favor, insira o Número da Casa.</div>
           </div>
           <div class="col-4">
             <label for="bairro_problema" class="form-label">Bairro</label>
-            <input type="text" class="form-control" id="bairro_problema" name="bairro_problema" placeholder=""/>
+            <input type="text" class="form-control" id="bairro_problema" name="bairro_problema" placeholder="" required/>
+            <div class="invalid-feedback">Por favor, insira o Bairro.</div>
           </div>
           <div class="col-12 p-1">
             <label for="desc_problema" class="form-label">Descrição</label>
-            <textarea class="form-control" id="desc_problema" name="desc_problema" rows="3"></textarea>
+            <textarea class="form-control" id="desc_problema" name="desc_problema" rows="3" required></textarea>
+            <div class="invalid-feedback">Por favor, insira uma Descrição do Problema.</div>
           </div>
 
         </form>

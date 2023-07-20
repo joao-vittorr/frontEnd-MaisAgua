@@ -23,7 +23,7 @@
     <!--Navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container px-4 px-lg-0">
-            <a class="navbar-brand" href="index.html"><img class="logo" src="assets/logo.png" alt="Logo mais água"></a>
+            <a class="navbar-brand" href="index.html"><img class="logo" src="assets/imagens/logo.png" alt="Logo mais água"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> Menu <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -74,13 +74,15 @@
         <div class="container card col-sm-15 text-start">
             <form id="formBuscaProblema" class="row g-3">
               <div class="col-md-12">
-                  <label for="tipo_problema">Qual é o seu problema?</label>
+                  <label for="tipo_problema">Selecione o tipo do problema?</label>
                   <select class="form-control" id="tipo_problema" name="tipo_problema">
+                    <option value="">Selecione</option>
                     <option value="Vazamento">Vazamento</option>
                     <option value="Falta de Água">Falta de Água</option>
                     <option value="Pressão da Água">Pressão da Água</option>
                     <option value="Manutenção">Manutenção</option>
                   </select>
+                  <div class="invalid-feedback">Por favor, selecione o Tipo do Problema.</div>
                 </div>
               <button type="submit">Buscar</button>
             </form>

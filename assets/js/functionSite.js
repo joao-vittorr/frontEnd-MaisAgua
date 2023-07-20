@@ -47,12 +47,12 @@ function setLoginStatus(cred){
     html = `<div class='g_login'>
                 <img class='g_pic' src="${cred.picture}">
                 <span><div class='g_name'>${cred.given_name} ${cred.family_name}</div><div class='g_email'>${cred.email}</div></span>
-                <a href='#' onclick='logout()'><img src="assets/fechar.png" alt="Sair da conta"/></a>
+                <a href='#' onclick='logout()'><img src="assets/imagens/fechar.png" alt="Sair da conta"/></a>
             </div>`
     document.querySelector(".g_id_logado").innerHTML = html;
     //Mostra as opções de cadastrar Problema e Boletim ao usuario logado 
     var problemaNavBar = document.getElementById('problemaNavBar');
-    problemaNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarProblema.html">Cadastrar problema</a></div>`
+    problemaNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarProblema.html">Cadastrar Problema</a></div>`
     if(tokenUser == "110955377050310839557" || tokenUser == "114600802078895812317"){
         var boletimNavBar = document.getElementById('boletimNavBar');
         boletimNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarBoletim.html">Cadastrar Boletim</a></div>`
@@ -77,13 +77,39 @@ var URL_BASE = "http://localhost:8080/"
 var URL_EDIT = null;
 
 function saveBoletim(){
+   
+  var validar = ["tipo_problema_boletim", "cep_boletim", "cidade_boletim", "estado_boletim", "logradouro_boletim", "previsao_boletim", "desc_boletim", "bairro_boletim"];
+
+  var formValido = true;
+
+  //cada campo a ser validado
+  validar.forEach(function(campo) {
+      var elemento = document.getElementById(campo);
+      var feedbackElemento = document.querySelector(`#${campo} + .invalid-feedback`);
+
+      if (elemento.value.trim() === "") {
+          elemento.classList.add("is-invalid");
+          feedbackElemento.style.display = "block";
+          formValido = false;
+      } else {
+          elemento.classList.remove("is-invalid");
+          elemento.classList.add("is-valid");
+          feedbackElemento.style.display = "none";
+      }
+  });
+
+ 
+  if (formValido) {
+    // Se todos os campos estão válidos, enviar o formulário
+    document.getElementById("form").submit();
+
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_problema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim').serializeJSON();
+    dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim, #previsao_boletim').serializeJSON();
     dados['token_user_boletim'] = tokenUser;
 
-    console.log(dados);
+  console.log(dados);
 
-    if (URL_EDIT != null) {
+      if (URL_EDIT != null) {
         //envia para a url do objeto
         url = URL_EDIT;
         method = "PUT";
@@ -105,6 +131,7 @@ function saveBoletim(){
       }).fail(function (res) {
         console.log(res);
       });
+  }
 
 }
 
@@ -216,7 +243,13 @@ function delBoletim(url){
 var tipo_do_problema_boletim;
 
 function buscarBoletim(parametro_boletim) {
+
+  var seachBoletim = document.getElementById("tipo_problema_boletim");
+
+  if(parametro_boletim != ""){ 
   tipo_do_problema_boletim = parametro_boletim; // Atribui o valor do parâmetro à variável tipo_do_problema_boletim
+  seachBoletim.classList.remove("is-invalid");
+  seachBoletim.classList.add("is-valid");
 
   $.ajax(URL_BASE + "boletim/", {
     method: 'get',
@@ -250,64 +283,90 @@ function buscarBoletim(parametro_boletim) {
 
     parametro_boletim = '';
 
-  }).fail(function (res) {
-    let table = $('#tableContentBoletimBuscar');
-    table.html("");
-    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
-    table.append(tr);
-  });
+    }).fail(function (res) {
+      let table = $('#tableContentBoletimBuscar');
+      table.html("");
+      const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+      table.append(tr);
+    });
+  }else{
+    seachBoletim.classList.add("is-invalid");
+  }
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function saveProblema() {
-    const fileInput = document.getElementById('foto');
+  var camposAValidar = ["tipo_problema", "foto", "cep_problema", "cidade_problema", "estado_problema", "logradouro_problema", "numero_rua_problema", "bairro_problema", "desc_problema"];
+
+  var formValido = true;
+
+  // Iterar por cada campo a ser validado
+  camposAValidar.forEach(function(campo) {
+      var elemento = document.getElementById(campo);
+      var feedbackElemento = document.querySelector(`#${campo} + .invalid-feedback`);
+
+      if (elemento.value.trim() === "") {
+          elemento.classList.add("is-invalid");
+          feedbackElemento.style.display = "block";
+          formValido = false;
+      } else {
+          elemento.classList.remove("is-invalid");
+          elemento.classList.add("is-valid");
+          feedbackElemento.style.display = "none";
+      }
+  });
+
+  if (formValido) {
+      // Se todos os campos estão válidos, enviar o formulário
+      document.getElementById("form").submit();
   
-    const file = fileInput.files[0];
-    if (!file) {
-      alert('Selecione uma imagem.');
-      return;
-    }
+
+
+  const fileInput = document.getElementById('foto');
+  const file = fileInput.files[0];
   
-    convertImageToString(file)
-      .then(base64String => {
-        // Envie a string base64 para o servidor, salve em um campo oculto no formulário, etc.
-        console.log('String base64:', base64String);
-  
-        //captura os dados do form, já colocando como um JSON
-        dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user_problema').serializeJSON();
-        dados['token_user_problema'] = tokenUser;
-        dados['foto'] = base64String; // Atribui a string base64 no campo 'foto'
-  
-        console.log(dados);
-  
-        if (URL_EDIT != null) {
-          //envia para a url do objeto
-          url = URL_EDIT;
-          method = "PUT";
-        } else {
-          //caso contrário, envia para a url de salvar
-          url = URL_BASE + "problema/";
-          method = "POST";
-        }
-  
-        //envia para o backend
-        $.ajax(url, {
-          data: JSON.stringify(dados),
-          method: method,
-          contentType: "application/json",
-        }).done(function (res) {
-          URL_EDIT = URL_BASE + "problema/" + res.id_problema
-  
-          updateListProblema();
-        }).fail(function (res) {
-          console.log(res);
-        });
-  
-      })
-      .catch(error => {
-        console.error('Erro ao converter imagem:', error);
+
+  convertImageToString(file)
+    .then(base64String => {
+      // Envie a string base64 para o servidor, salve em um campo oculto no formulário, etc.
+      console.log('String base64:', base64String);
+
+      //captura os dados do form, já colocando como um JSON
+      dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user_problema').serializeJSON();
+      dados['token_user_problema'] = tokenUser;
+      dados['foto'] = base64String; // Atribui a string base64 no campo 'foto'
+
+      console.log(dados);
+
+      if (URL_EDIT != null) {
+        //envia para a url do objeto
+        url = URL_EDIT;
+        method = "PUT";
+      } else {
+        //caso contrário, envia para a url de salvar
+        url = URL_BASE + "problema/";
+        method = "POST";
+      }
+
+      //envia para o backend
+      $.ajax(url, {
+        data: JSON.stringify(dados),
+        method: method,
+        contentType: "application/json",
+      }).done(function (res) {
+        URL_EDIT = URL_BASE + "problema/" + res.id_problema
+
+        updateListProblema();
+      }).fail(function (res) {
+        console.log(res);
       });
+
+    })
+    .catch(error => {
+      console.error('Erro ao converter imagem:', error);
+    });
+  }
 }
 
 function updateListProblema() {
@@ -397,7 +456,14 @@ $(document).ready(function() {
 var tipo_do_problema;
 
 function buscarProblema(parametro_problema) {
+
+  var seachProblema = document.getElementById("tipo_problema");
+
+  if(parametro_problema != ""){ 
+
     tipo_do_problema = parametro_problema; // Atribui o valor do parâmetro à variável tipo_do_problema
+    seachProblema.classList.remove("is-invalid");
+    seachProblema.classList.add("is-valid");
   
     $.ajax(URL_BASE + "problema/", {
       method: 'get',
@@ -442,6 +508,9 @@ function buscarProblema(parametro_problema) {
       const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
       table.append(tr);
     });
+  }else{
+    seachProblema.classList.add("is-invalid");
+  }
 }
 
 $(document).ready(function() {
@@ -539,11 +608,26 @@ function convertImageToString(file) {
   });
 }
 function resetFormulario() {
-  // Obtém o formulário pelo ID
-  const formulario = document.getElementById('form');
-  
-  // Reseta o formulário para o estado inicial
-  formulario.reset();
+    // Limpar todos os campos do formulário
+    document.getElementById("form").reset();
+
+    // Limpar as classes de feedback de erro
+    var camposInvalidos = document.querySelectorAll(".is-invalid");
+    camposInvalidos.forEach(function (campo) {
+        campo.classList.remove("is-invalid");
+    });
+
+    // Limpar as classes de feedback de sucesso
+    var camposValidos = document.querySelectorAll(".is-valid");
+    camposValidos.forEach(function (campo) {
+        campo.classList.remove("is-valid");
+    });
+
+    // Esconder as mensagens de feedback de erro
+    var feedbacks = document.querySelectorAll(".invalid-feedback");
+    feedbacks.forEach(function (feedback) {
+        feedback.style.display = "none";
+    });
 }
 
 $(function(){
