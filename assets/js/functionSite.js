@@ -11,14 +11,23 @@ function jwtDecode (token) {
     return JSON.parse(jsonPayload);
 }
 
-//essa é a funcao que o google irá chamar quando um usuario se autenticar
-function loginCallback(resp){
-    cred = jwtDecode(resp.credential);
-    //salva o token inteiro, pois só é possível salvar strings no localStorage
-    //cuidado, esse token é mutavel, não pode ser usado como chave no banco
-    localStorage.setItem("gauth-token", resp.credential);
-    setLoginStatus(cred);
+function loginCallback(resp) {
+  // Decodifica o token e obtém as informações do usuário logado
+  cred = jwtDecode(resp.credential);
+
+  // Salva o token inteiro no localStorage
+  // Cuidado, esse token é mutável, não pode ser usado como chave no banco
+  localStorage.setItem("gauth-token", resp.credential);
+
+  // Configura o status do login e a variável tokenUser
+  setLoginStatus(cred);
+
+  // Agora que setLoginStatus() foi chamada e a variável tokenUser está definida,
+  // podemos chamar a função updateListBoletim()
+  updateListBoletim();
+  updateListProblema();
 }
+
 
 
 function logout(){
@@ -27,7 +36,7 @@ function logout(){
     document.querySelector(".g_id_signin").style.display = 'block';
     document.getElementById('boletimNavBar').innerHTML = "";
     document.getElementById('problemaNavBar').innerHTML = "";
-
+    window.location.replace("index.html")
 }
 
 function setLoginStatus(cred){
@@ -60,7 +69,7 @@ window.addEventListener("load",() => {
     }
 });
 
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // enviando dados para o back-end
 
@@ -98,6 +107,158 @@ function saveBoletim(){
       });
 
 }
+
+function editBoletim(url) {
+    url = URL_BASE + url
+    // Primeiro, solicita as informações do problema ao backend
+    $.ajax(url, {
+      method: 'GET',
+    }).done(function(res) {
+      // Preenche os campos do formulário com os dados retornados
+      $('#tipo_problema_boletim').val(res.tipo_problema_boletim);
+      $('#cep_boletim').val(res.cep_boletim);
+      $('#cidade_boletim').val(res.cidade_boletim);
+      $('#estado_boletim').val(res.estado_boletim);
+      $('#logradouro_boletim').val(res.logradouro_boletim);
+      $('#previsao_boletim').val(res.previsao_boletim);
+      $('#bairro_boletim').val(res.bairro_boletim);
+      $('#desc_boletim').val(res.desc_boletim);
+      
+      // Armazena a URL do objeto que está sendo editado
+      URL_EDIT = url;
+    });
+}
+  
+function updateListBoletimCadastar() {
+  $.ajax(URL_BASE + "boletim/", {
+    method: 'get',
+  }).done(function (res) {
+    let table = $('#tabelaCadastrarBoletim');
+    table.html("");
+    $(res).each(function (k, el) {
+      let res = el;
+      const div = $(`<div class="row g-0">
+                          <div class="col-md-8">
+                          <div class="card-body">
+                          <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
+                          <p class="card-text">${res.desc_boletim}</p>
+                          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+                          </div>
+                      </div>`);
+
+      if (tokenUser === res.token_user_boletim) {
+        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
+                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
+      }
+      div.append(`</hr>`);
+      table.append(div);
+    });
+
+  }).fail(function (res) {
+    let table = $('#tabelaCadastrarBoletim');
+    table.html("");
+    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    table.append(tr);
+  });
+}
+
+function updateListBoletim() {
+  $.ajax(URL_BASE + "boletim/", {
+    method: 'get',
+  }).done(function (res) {
+    let table = $('#tableContentBoletimHome');
+    table.html("");
+    $(res).each(function (k, el) {
+      let res = el;
+      const div = $(`<div class="row g-0">
+                          <div class="col-md-8">
+                          <div class="card-body">
+                          <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
+                          <p class="card-text">${res.desc_boletim}</p>
+                          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+                          </div>
+                      </div>`);
+
+      if (tokenUser === res.token_user_boletim) {
+        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
+                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
+      }
+      div.append(`</hr>`);
+      table.append(div);
+    });
+
+  }).fail(function (res) {
+    let table = $('#tableContentBoletimHome');
+    table.html("");
+    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    table.append(tr);
+  });
+}
+  
+function delBoletim(url){
+  if (confirm("Deseja realmente deletar esse registro?")){
+    //envia para o backend
+    $.ajax({
+    url: URL_BASE + url, // URL do endpoint da API
+    method: 'DELETE', // Método HTTP DELETE
+    }).done(function(res) {
+    console.log('Objeto deletado com sucesso');
+    // Faça algo após a exclusão do objeto
+    updateListBoletim();
+    }).fail(function(error) {
+      console.error('Erro ao deletar objeto:', error);
+      // Lida com possíveis erros na exclusão do objeto
+    console.log(res);
+    });
+  }
+}
+
+var tipo_do_problema_boletim;
+
+function buscarBoletim(parametro_boletim) {
+  tipo_do_problema_boletim = parametro_boletim; // Atribui o valor do parâmetro à variável tipo_do_problema_boletim
+
+  $.ajax(URL_BASE + "boletim/", {
+    method: 'get',
+  }).done(function (res) {
+    let table = $('#tableContentBoletimBuscar');
+    table.html("");
+
+    $(res).each(function (k, el) {
+      let res = el;
+
+      // Realiza a comparação entre tipo_do_problema_boletim e res.tipo_problema
+      if (tipo_do_problema_boletim === res.tipo_problema_boletim) {
+        let res = el;
+        const div = $(`<div class="row g-0">
+                            <div class="col-md-8">
+                            <div class="card-body">
+                            <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
+                            <p class="card-text">${res.desc_boletim}</p>
+                            <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+                            </div>
+                        </div>`);
+  
+        if (tokenUser === res.token_user_boletim) {
+          div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
+                      <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
+        }
+        div.append(`</hr>`);
+        table.append(div);
+      }
+    });
+
+    parametro_boletim = '';
+
+  }).fail(function (res) {
+    let table = $('#tableContentBoletimBuscar');
+    table.html("");
+    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    table.append(tr);
+  });
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function saveProblema() {
     const fileInput = document.getElementById('foto');
@@ -147,9 +308,9 @@ function saveProblema() {
       .catch(error => {
         console.error('Erro ao converter imagem:', error);
       });
-  }
+}
 
-  function updateListProblema() {
+function updateListProblema() {
     $.ajax(URL_BASE + "problema/", {
         method: 'get',
     }).done(function (res) {
@@ -160,7 +321,7 @@ function saveProblema() {
             const div = $(`<div class="row g-0">
                                 <div class="col-md-8">
                                 <div class="card-body">
-                                <h5 class="card-title">${res.tipo_problema}</h5>
+                                <h5 class="card-title">Problema sobre: ${res.tipo_problema}</h5>
                                 <p class="card-text">${res.desc_problema}</p>
                                 <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
                                 </div>
@@ -170,8 +331,11 @@ function saveProblema() {
             img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
             img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
             div.append(img); // Adicionar a imagem à div
-            div.append(`<button type="button" class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
-                        <button type="button" class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></button>`);
+            if (tokenUser === res.token_user_problema) {
+              div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
+                          <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('boletim/${res.id_problema}')">Deletar</a></button>`);
+            }
+            div.append(`</hr>`);
             table.append(div);
         })
 
@@ -183,33 +347,41 @@ function saveProblema() {
     });
 }
 
-function updateListBoletim() {
-    $.ajax(URL_BASE + "boletim/", {
-        method: 'get',
-    }).done(function (res) {
-        let table = $('#tableContentBoletim');
-        table.html("");
-        $(res).each(function (k, el) {
-            let res = el;
-            const div = $(`<div class="row g-0">
-                                <div class="col-md-8">
-                                <div class="card-body">
-                                <h5 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
-                                <p class="card-text">${res.desc_boletim}</p>
-                                <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
-                                </div>
-                            </div>`);
-            div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editboletim('boletim/${res.id_boletim}')">Editar</a></button>
-                        <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
-            table.append(div);
-        })
+function updateListProblema() {
+  $.ajax(URL_BASE + "problema/", {
+      method: 'get',
+  }).done(function (res) {
+      let table = $('#tableContentProblemaHome');
+      table.html("");
+      $(res).each(function (k, el) {
+          let res = el;
+          const div = $(`<div class="row g-0">
+                              <div class="col-md-8">
+                              <div class="card-body">
+                              <h5 class="card-title">Problema sobre: ${res.tipo_problema}</h5>
+                              <p class="card-text">${res.desc_problema}</p>
+                              <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
+                              </div>
+                          </div>`);
+          const img = $('<img>'); // Criar um elemento <img>
+          img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
+          img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
+          img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
+          div.append(img); // Adicionar a imagem à div
+          if (tokenUser === res.token_user_problema) {
+            div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
+                        <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('boletim/${res.id_problema}')">Deletar</a></button>`);
+          }
+          div.append(`</hr>`);
+          table.append(div);
+      })
 
-    }).fail(function (res) {
-        let table = $('#tableContentBoletim');
-        table.html("");
-        const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
-        table.append(tr);
-    });
+  }).fail(function (res) {
+      let table = $('#tableContentProblemaHome');
+      table.html("");
+      const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+      table.append(tr);
+  });
 }
 
 $(document).ready(function() {
@@ -220,11 +392,11 @@ $(document).ready(function() {
   
       buscarProblema(parametro_problema); // Chama a função buscar com o valor do parâmetro
     });
-  });
+});
 
-  var tipo_do_problema;
+var tipo_do_problema;
 
-  function buscarProblema(parametro_problema) {
+function buscarProblema(parametro_problema) {
     tipo_do_problema = parametro_problema; // Atribui o valor do parâmetro à variável tipo_do_problema
   
     $.ajax(URL_BASE + "problema/", {
@@ -241,7 +413,7 @@ $(document).ready(function() {
           const div = $(`<div class="row g-0">
                             <div class="col-md-8">
                               <div class="card-body">
-                                <h5 class="card-title">${res.tipo_problema}</h5>
+                                <h5 class="card-title">Problema sobre: ${res.tipo_problema}</h5>
                                 <p class="card-text">${res.desc_problema}</p>
                                 <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
                               </div>
@@ -252,8 +424,12 @@ $(document).ready(function() {
           img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
           img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
           div.append(img); // Adicionar a imagem à div
-          div.append(`<button type="button" class="btn btn-primary" onclick="editProblema('problema/${res.id_problema}')">Editar</button>
-                      <button type="button" class="btn btn-danger" onclick="delProblema('problema/${res.id_problema}')">Deletar</button>`);
+          if (tokenUser === res.token_user_problema) {
+            div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
+                        <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('boletim/${res.id_problema}')">Deletar</a></button>`);
+        }
+        div.append(`</hr>`);
+
           table.append(div);
         }
       });
@@ -266,64 +442,17 @@ $(document).ready(function() {
       const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
       table.append(tr);
     });
-  }
+}
 
-  $(document).ready(function() {
-    $('#formBuscaBoletim').submit(function(event) {
-      event.preventDefault(); // Impede o envio padrão do formulário
+$(document).ready(function() {
+  $('#formBuscaBoletim').submit(function(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
   
-      const parametro_boletim = $('#tipo_problema_boletim').val(); // Obtém o valor do campo de busca
+    const parametro_boletim = $('#tipo_problema_boletim').val(); // Obtém o valor do campo de busca
   
-      buscarBoletim(parametro_boletim); // Chama a função buscar com o valor do parâmetro
-    });
+    buscarBoletim(parametro_boletim); // Chama a função buscar com o valor do parâmetro
   });
-
-  var tipo_do_problema;
-
-  function buscarBoletim(parametro_boletim) {
-    tipo_do_problema = parametro_boletim; // Atribui o valor do parâmetro à variável tipo_do_problema
-  
-    $.ajax(URL_BASE + "boletim/", {
-      method: 'get',
-    }).done(function (res) {
-      let table = $('#tableContentBoletimBuscar');
-      table.html("");
-  
-      $(res).each(function (k, el) {
-        let res = el;
-  
-        // Realiza a comparação entre tipo_do_problema e res.tipo_problema
-        if (tipo_do_problema === res.tipo_problema_boletim) {
-            const div = $(`<div class="row g-0">
-            <div class="col-md-8">
-            <div class="card-body">
-            <h5 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
-            <p class="card-text">${res.desc_boletim}</p>
-            <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
-            </div>
-            </div>`);
-            div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editboletim('boletim/${res.id_boletim}')">Editar</a></button>
-                <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
-            table.append(div);
-        }
-      });
-  
-      parametro_boletim = '';
-  
-    }).fail(function (res) {
-      let table = $('#tableContentBoletimBuscar');
-      table.html("");
-      const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
-      table.append(tr);
-    });
-  }
-
-$(function(){
-    //Sempre que carregar a página atualiza a lista
-    updateListProblema();
-    updateListBoletim();
 });
-
 
 function editProblema(url) {
     url = URL_BASE + url
@@ -340,37 +469,17 @@ function editProblema(url) {
       $('#numero_rua_problema').val(res.numero_rua_problema);
       $('#bairro_problema').val(res.bairro_problema);
       $('#desc_problema').val(res.desc_problema);
-    
+      
       // Armazena a URL do objeto que está sendo editado
       URL_EDIT = url;
     });
 }
-function editboletim(url) {
-    url = URL_BASE + url
-    // Primeiro, solicita as informações do problema ao backend
-    $.ajax(url, {
-      method: 'GET',
-    }).done(function(res) {
-      // Preenche os campos do formulário com os dados retornados
-      $('#tipo_problema_boletim').val(res.tipo_problema_boletim);
-      $('#cep_boletim').val(res.cep_boletim);
-      $('#cidade_boletim').val(res.cidade_boletim);
-      $('#estado_boletim').val(res.estado_boletim);
-      $('#logradouro_boletim').val(res.logradouro_boletim);
-      $('#previsao_boletim').val(res.previsao_boletim);
-      $('#bairro_boletim').val(res.bairro_boletim);
-      $('#desc_boletim').val(res.desc_boletim);
-    
-      // Armazena a URL do objeto que está sendo editado
-      URL_EDIT = url;
-    });
-}
-
+  
 function delProblema(url){
     if (confirm("Deseja realmente deletar esse registro?")){
-        //envia para o backend
-        $.ajax({
-            url: URL_BASE + url, // URL do endpoint da API
+      //envia para o backend
+      $.ajax({
+        url: URL_BASE + url, // URL do endpoint da API
             method: 'DELETE', // Método HTTP DELETE
           }).done(function(res) {
             console.log('Objeto deletado com sucesso');
@@ -381,77 +490,64 @@ function delProblema(url){
             // Lida com possíveis erros na exclusão do objeto
             console.log(res);
           });
-    }
+  }
 }
-
-function delBoletim(url){
-    if (confirm("Deseja realmente deletar esse registro?")){
-        //envia para o backend
-        $.ajax({
-            url: URL_BASE + url, // URL do endpoint da API
-            method: 'DELETE', // Método HTTP DELETE
-          }).done(function(res) {
-            console.log('Objeto deletado com sucesso');
-            // Faça algo após a exclusão do objeto
-            updateListBoletim();
-          }).fail(function(error) {
-            console.error('Erro ao deletar objeto:', error);
-            // Lida com possíveis erros na exclusão do objeto
-            console.log(res);
-          });
-    }
-}
-
 
 function convertImageToString(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-
+        
         reader.onload = function () {
-            const arrayBuffer = reader.result;
-            const byteArray = new Uint8Array(arrayBuffer);
-            const binaryString = byteArray.reduce((data, byte) => data + String.fromCharCode(byte), '');
-
-            resolve(btoa(binaryString)); // Converte para base64
+          const arrayBuffer = reader.result;
+          const byteArray = new Uint8Array(arrayBuffer);
+          const binaryString = byteArray.reduce((data, byte) => data + String.fromCharCode(byte), '');
+          
+          resolve(btoa(binaryString)); // Converte para base64
         };
 
         reader.onerror = function (error) {
-            reject(error);
+          reject(error);
         };
-
+        
         reader.readAsArrayBuffer(file);
-    });
-}
-
-function convertStringToImage(base64String) {
-    const img = document.createElement('img');
+      });
+    }
+    
+    function convertStringToImage(base64String) {
+      const img = document.createElement('img');
     img.src = `data:image/png;base64,${base64String}`;
     return img;
 }
 
 function convertImageToString(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = function () {
-        const arrayBuffer = reader.result;
-        const byteArray = new Uint8Array(arrayBuffer);
-        const binaryString = byteArray.reduce((data, byte) => data + String.fromCharCode(byte), '');
-
-        resolve(btoa(binaryString)); // Converte para base64
-      };
-
-      reader.onerror = function (error) {
-        reject(error);
-      };
-
-      reader.readAsArrayBuffer(file);
-    });
-  }
-  function resetFormulario() {
-    // Obtém o formulário pelo ID
-    const formulario = document.getElementById('form');
-
-    // Reseta o formulário para o estado inicial
-    formulario.reset();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    
+    reader.onload = function () {
+      const arrayBuffer = reader.result;
+      const byteArray = new Uint8Array(arrayBuffer);
+      const binaryString = byteArray.reduce((data, byte) => data + String.fromCharCode(byte), '');
+      
+      resolve(btoa(binaryString)); // Converte para base64
+    };
+    
+    reader.onerror = function (error) {
+      reject(error);
+    };
+    
+    reader.readAsArrayBuffer(file);
+  });
 }
+function resetFormulario() {
+  // Obtém o formulário pelo ID
+  const formulario = document.getElementById('form');
+  
+  // Reseta o formulário para o estado inicial
+  formulario.reset();
+}
+
+$(function(){
+    //Sempre que carregar a página atualiza a lista
+    updateListProblema();
+    updateListBoletim();
+});

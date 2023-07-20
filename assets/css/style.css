@@ -1,21 +1,19 @@
-* { 
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+  
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
 }
 
 .logo {
     width: 100px;
     height: 40px;
-}
-
-footer {
-    padding-top: 8px;
-    position: absolute;
-    text-align: center;
-    bottom: 0;
-    width: 100%;
-    height: 2.5rem;            /* altura do rodapé */
 }
 
 .centralizaTitulo{
@@ -94,7 +92,27 @@ footer {
     border-radius: 10px;
     text-align: center;
 }
+
 .configuraBotao{
     color: white;
     text-decoration: none;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+  
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+  
+footer p {
+    margin: 0;
 }
