@@ -202,17 +202,28 @@ function updateListBoletim() {
   }).done(function (res) {
     let table = $('#tableContentBoletimHome');
     table.html("");
+
+    // Ordenar o array res em ordem decrescente com base na propriedade id_boletim
+    res.sort(function (a, b) {
+      return b.id_boletim - a.id_boletim;
+    });
+
     $(res).each(function (k, el) {
-      let res = el;
+      let resItem = el;
       const div = $(`<div class="row g-0">
                           <div class="col-md-8">
                           <div class="card-body">
-                          <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
-                          <p class="card-text">${res.desc_boletim}</p>
-                          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+                          <h5 class="card-title">Boletim sobre: ${resItem.tipo_problema_boletim} - Previsão: ${resItem.previsao_boletim}h</h5>
+                          <p class="card-text">${resItem.desc_boletim}</p>
+                          <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_boletim} - ${resItem.bairro_boletim}, ${resItem.cidade_boletim}/${resItem.estado_boletim} - Cep: ${resItem.cep_boletim}</small></p>
                           </div>
                       </div>`);
-      div.append(`</hr>`);
+
+      if (tokenUser === resItem.token_user_boletim) {
+        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${resItem.id_boletim}')">Editar</a></button>
+                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${resItem.id_boletim}')">Deletar</a></button>`);
+      }
+      div.append(`<hr>`);
       table.append(div);
     });
 
@@ -223,6 +234,7 @@ function updateListBoletim() {
     table.append(tr);
   });
 }
+
 
 function updateListUserBoletim() {
   $.ajax(URL_BASE + "boletim/", {
@@ -430,36 +442,45 @@ function saveProblema() {
 
 function updateListProblema() {
   $.ajax(URL_BASE + "problema/", {
-      method: 'get',
+    method: 'get',
   }).done(function (res) {
-      let table = $('#tableContentProblemaHome');
-      table.html("");
-      $(res).each(function (k, el) {
-          let res = el;
-          const div = $(`<div class="row g-0">
-                              <div class="col-md-8">
-                              <div class="card-body">
-                              <h5 class="card-title">Problema sobre: ${res.tipo_problema}</h5>
-                              <p class="card-text">${res.desc_problema}</p>
-                              <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
-                              </div>
-                          </div>`);
-          const img = $('<img>'); // Criar um elemento <img>
-          img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
-          img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
-          img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
-          div.append(img); // Adicionar a imagem à div
-          div.append(`</hr>`);
-          table.append(div);
-      })
+    let table = $('#tableContentProblemaHome');
+    table.html("");
+
+    // Ordenar o array res em ordem decrescente com base na propriedade id_problema
+    res.sort(function (a, b) {
+      return b.id_problema - a.id_problema;
+    });
+
+    $(res).each(function (k, el) {
+      let resItem = el;
+      const div = $(`<div class="row g-0">
+                          <div class="col-md-8">
+                          <div class="card-body">
+                          <h5 class="card-title">Problema sobre: ${resItem.tipo_problema}</h5>
+                          <p class="card-text">${resItem.desc_problema}</p>
+                          <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_problema}, N° ${resItem.numero_rua_problema} - ${resItem.bairro_problema}, ${resItem.cidade_problema}/${resItem.estado_problema} - Cep: ${resItem.cep_problema}</small></p>
+                          </div>
+                      </div>`);
+
+      const img = $('<img>'); // Criar um elemento <img>
+      img.attr('src', `data:image/png;base64, ${resItem.foto}`); // Definir a fonte da imagem como a string base64
+      img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
+      img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
+      div.append(img); // Adicionar a imagem à div
+
+      div.append(`<hr>`);
+      table.append(div);
+    });
 
   }).fail(function (res) {
-      let table = $('#tableContentProblemaHome');
-      table.html("");
-      const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
-      table.append(tr);
+    let table = $('#tableContentProblemaHome');
+    table.html("");
+    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    table.append(tr);
   });
 }
+
 
 function updateListUserProblema() {
   $.ajax(URL_BASE + "problema/", {
