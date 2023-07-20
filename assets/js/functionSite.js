@@ -106,7 +106,7 @@ function saveBoletim(){
     document.getElementById("form").submit();
 
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipoProblema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim, #previsao_boletim').serializeJSON();
+    dados = $('#tipo_problema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim, #previsao_boletim').serializeJSON();
     dados['token_user_boletim'] = tokenUser;
 
   console.log(dados);
@@ -164,22 +164,28 @@ function updateListBoletim() {
   }).done(function (res) {
     let table = $('#tableContentBoletimHome');
     table.html("");
+
+    // Ordenar o array res em ordem decrescente com base na propriedade previsao_boletim
+    res.sort(function (a, b) {
+      return b.previsao_boletim - a.previsao_boletim;
+    });
+
     $(res).each(function (k, el) {
-      let res = el;
+      let resItem = el;
       const div = $(`<div class="row g-0">
                           <div class="col-md-8">
                           <div class="card-body">
-                          <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
-                          <p class="card-text">${res.desc_boletim}</p>
-                          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+                          <h5 class="card-title">Boletim sobre: ${resItem.tipo_problema_boletim} - Previsão: ${resItem.previsao_boletim}h</h5>
+                          <p class="card-text">${resItem.desc_boletim}</p>
+                          <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_boletim} - ${resItem.bairro_boletim}, ${resItem.cidade_boletim}/${resItem.estado_boletim} - Cep: ${resItem.cep_boletim}</small></p>
                           </div>
                       </div>`);
 
-      if (tokenUser === res.token_user_boletim) {
-        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
-                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
+      if (tokenUser === resItem.token_user_boletim) {
+        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${resItem.id_boletim}')">Editar</a></button>
+                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${resItem.id_boletim}')">Deletar</a></button>`);
       }
-      div.append(`</hr>`);
+      div.append(`<hr>`);
       table.append(div);
     });
 
@@ -190,6 +196,7 @@ function updateListBoletim() {
     table.append(tr);
   });
 }
+
  
 function updateListBoletim() {
   $.ajax(URL_BASE + "boletim/", {
