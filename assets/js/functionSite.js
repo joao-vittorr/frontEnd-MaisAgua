@@ -435,8 +435,6 @@ function saveProblema() {
       console.error('Erro ao converter imagem:', error);
     });
 
-    // Se todos os campos estão válidos, enviar o formulário
-    //document.getElementById("formProblema").submit();
   }
 }
 
