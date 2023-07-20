@@ -103,7 +103,7 @@ function saveBoletim(){
  
   if (formValido) {
     // Se todos os campos estão válidos, enviar o formulário
-    document.getElementById("form").submit();
+    document.getElementById("formBoletim").submit();
 
     //captura os dados do form, já colocando como um JSON
     dados = $('#tipo_problema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim, #previsao_boletim').serializeJSON();
@@ -359,7 +359,7 @@ function saveProblema() {
 
   if (formValido) {
       // Se todos os campos estão válidos, enviar o formulário
-      document.getElementById("form").submit();
+      document.getElementById("formProblema").submit();
   
 
 
@@ -651,26 +651,48 @@ function convertImageToString(file) {
   });
 }
 function resetFormulario() {
-    // Limpar todos os campos do formulário
-    document.getElementById("form").reset();
+  // Limpar todos os campos do formulário
+  document.getElementById("formProblema").reset();
 
-    // Limpar as classes de feedback de erro
-    var camposInvalidos = document.querySelectorAll(".is-invalid");
-    camposInvalidos.forEach(function (campo) {
-        campo.classList.remove("is-invalid");
-    });
+  // Limpar as classes de feedback de erro
+  var camposInvalidos = document.querySelectorAll(".is-invalid");
+  camposInvalidos.forEach(function (campo) {
+      campo.classList.remove("is-invalid");
+  });
 
-    // Limpar as classes de feedback de sucesso
-    var camposValidos = document.querySelectorAll(".is-valid");
-    camposValidos.forEach(function (campo) {
-        campo.classList.remove("is-valid");
-    });
+  // Limpar as classes de feedback de sucesso
+  var camposValidos = document.querySelectorAll(".is-valid");
+  camposValidos.forEach(function (campo) {
+      campo.classList.remove("is-valid");
+  });
 
-    // Esconder as mensagens de feedback de erro
-    var feedbacks = document.querySelectorAll(".invalid-feedback");
-    feedbacks.forEach(function (feedback) {
-        feedback.style.display = "none";
-    });
+  // Esconder as mensagens de feedback de erro
+  var feedbacks = document.querySelectorAll(".invalid-feedback");
+  feedbacks.forEach(function (feedback) {
+      feedback.style.display = "none";
+  });
+}
+function resetFormulario() {
+  // Limpar todos os campos do formulário
+  document.getElementById("formBoletim").reset();
+
+  // Limpar as classes de feedback de erro
+  var camposInvalidos = document.querySelectorAll(".is-invalid");
+  camposInvalidos.forEach(function (campo) {
+      campo.classList.remove("is-invalid");
+  });
+
+  // Limpar as classes de feedback de sucesso
+  var camposValidos = document.querySelectorAll(".is-valid");
+  camposValidos.forEach(function (campo) {
+      campo.classList.remove("is-valid");
+  });
+
+  // Esconder as mensagens de feedback de erro
+  var feedbacks = document.querySelectorAll(".invalid-feedback");
+  feedbacks.forEach(function (feedback) {
+      feedback.style.display = "none";
+  });
 }
 
 $(function(){
