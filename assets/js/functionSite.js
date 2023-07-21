@@ -1,6 +1,7 @@
 //Google Login 
 //decodifica o jwt
 var tokenUser = null;
+var nomeUser = null;
 function jwtDecode (token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -41,6 +42,7 @@ function logout(){
 
 function setLoginStatus(cred){
     tokenUser = cred.sub;
+    nomeUser = cred.given_name + " " + cred.family_name;
     //esconde o botao de login do google
     document.querySelector(".g_id_signin").style.display = 'none';
     //mostra o usuario logado
@@ -104,8 +106,9 @@ function saveBoletim(){
   if (formValido) {
 
     //captura os dados do form, já colocando como um JSON
-    dados = $('#tipo_problema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim, #previsao_boletim').serializeJSON();
+    dados = $('#tipo_problema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim, #previsao_boletim,#nome_user_boletim').serializeJSON();
     dados['token_user_boletim'] = tokenUser;
+    dados['nome_user_boletim'] = nomeUser;
 
       if (URL_EDIT != null) {
         //envia para a url do objeto
@@ -197,7 +200,7 @@ function updateListUserBoletim() {
     table.html("");
 
     // Filtrar os problemas relevantes ao tokenUser usando Array.filter()
-    const boletimUsuario = res.filter((res) => res.token_user_boletim === tokenUser);
+    const boletimUsuario = res.filter((res) => res.token_user_boletim === tokenUser || tokenUser === "110955377050310839557" || tokenUser === "114600802078895812317");
 
     // Ordenar os boletins em ordem decrescente com base na propriedade id_boletim
     boletimUsuario.sort(function (a, b) {
@@ -211,7 +214,7 @@ function updateListUserBoletim() {
         <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h4>
         <p class="card-text">${res.desc_boletim}</p>
         <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p></div>`);
-        if (tokenUser === res.token_user_boletim) {
+        if (tokenUser === res.token_user_boletim || tokenUser === "110955377050310839557" || tokenUser === "114600802078895812317") {
           div.append(`
             <button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
             <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>
@@ -277,12 +280,6 @@ function buscarBoletim(parametro_boletim) {
           <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h4>
           <p class="card-text">${res.desc_boletim}</p>
           <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p></div>`);
-          if (tokenUser === res.token_user_boletim) {
-            div.append(`
-            <button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
-            <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>
-          `);
-        }
         div.append(`</hr>`);
         table.append(div);
       }
@@ -371,8 +368,9 @@ function saveProblema() {
     .then(base64String => {
 
       //captura os dados do form, já colocando como um JSON
-      dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user_problema').serializeJSON();
+      dados = $('#tipo_problema,#cep_problema,#cidade_problema,#estado_problema,#logradouro_problema,#numero_rua_problema,#bairro_problema,#desc_problema,#token_user_problema,#nome_user_problema').serializeJSON();
       dados['token_user_problema'] = tokenUser;
+      dados['nome_user_problema'] = nomeUser;
       dados['foto'] = base64String; // Atribui a string base64 no campo 'foto'
 
       console.log(dados);
@@ -453,7 +451,7 @@ function updateListUserProblema() {
     table.html("");
 
     // Filtrar os problemas relevantes ao tokenUser usando Array.filter()
-    const problemasUsuario = res.filter((res) => res.token_user_problema === tokenUser);
+    const problemasUsuario = res.filter((res) => res.token_user_problema === tokenUser || tokenUser === "110955377050310839557" || tokenUser === "114600802078895812317");
 
     // Ordenar os problemas em ordem decrescente com base na propriedade id_problema
     problemasUsuario.sort(function (a, b) {
@@ -471,7 +469,7 @@ function updateListUserProblema() {
           img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
           div.append(img); // Adicionar a imagem à div
           div.append(`<p class="card-tex"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p></div>`);
-          if (tokenUser === res.token_user_problema) {
+          if (tokenUser === res.token_user_problema || tokenUser === "110955377050310839557" || tokenUser === "114600802078895812317") {
             div.append(`
               <button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
               <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></button>
@@ -532,10 +530,6 @@ function buscarProblema(parametro_problema) {
           img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
           div.append(img); // Adicionar a imagem à div
           div.append(`<p class="card-tex"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p></div>`);
-          if (tokenUser === res.token_user_problema) {
-          div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
-              <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></button>`);
-          }
           div.append(`<br/><hr>`);
           table.append(div);
         }
