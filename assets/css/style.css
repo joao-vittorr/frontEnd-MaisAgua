@@ -79,13 +79,13 @@ header {
     width:300px;
 }
 
-.alinhandoManualmente{
+.centraliza{
     text-align: center;
+    align-items: center;
 }
 
 .img-postagem{
-    width: 15em;
-    height: 15em;
+    height: 20em;
     border-radius: 10px;
     text-align: center;
 }
@@ -117,6 +117,7 @@ footer p {
 
 .containerr {
     display: flex;
+    margin-top: 5px;
 }
   
 .div1, .div2 {
@@ -124,12 +125,12 @@ footer p {
     margin-left: 0.5%;
     height: 88vh; /* Altura reduzida apenas para fins de exemplo */
     overflow-y: auto;
-    border: 1px solid #ddd;
+
 }
 
   
 /* Esconde a barra de rolagem */
   .div1::-webkit-scrollbar,
   .div2::-webkit-scrollbar {
-    width: 0; /* Torna a largura da barra de rolagem zero */
+    width: 1; /* Torna a largura da barra de rolagem zero */
 }

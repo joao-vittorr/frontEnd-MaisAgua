@@ -156,46 +156,6 @@ function editBoletim(url) {
       URL_EDIT = url;
     });
 }
-
-function updateListBoletim() {
-  $.ajax(URL_BASE + "boletim/", {
-    method: 'get',
-  }).done(function (res) {
-    let table = $('#tableContentBoletimHome');
-    table.html("");
-
-    // Ordenar o array res em ordem decrescente com base na propriedade previsao_boletim
-    res.sort(function (a, b) {
-      return b.previsao_boletim - a.previsao_boletim;
-    });
-
-    $(res).each(function (k, el) {
-      let resItem = el;
-      const div = $(`<div class="row g-0">
-                          <div class="col-md-8">
-                          <div class="card-body">
-                          <h5 class="card-title">Boletim sobre: ${resItem.tipo_problema_boletim} - Previsão: ${resItem.previsao_boletim}h</h5>
-                          <p class="card-text">${resItem.desc_boletim}</p>
-                          <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_boletim} - ${resItem.bairro_boletim}, ${resItem.cidade_boletim}/${resItem.estado_boletim} - Cep: ${resItem.cep_boletim}</small></p>
-                          </div>
-                      </div>`);
-
-      if (tokenUser === resItem.token_user_boletim) {
-        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${resItem.id_boletim}')">Editar</a></button>
-                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${resItem.id_boletim}')">Deletar</a></button>`);
-      }
-      div.append(`<hr>`);
-      table.append(div);
-    });
-
-  }).fail(function (res) {
-    let table = $('#tableContentBoletimHome');
-    table.html("");
-    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
-    table.append(tr);
-  });
-}
-
  
 function updateListBoletim() {
   $.ajax(URL_BASE + "boletim/", {
@@ -211,27 +171,19 @@ function updateListBoletim() {
 
     $(res).each(function (k, el) {
       let resItem = el;
-      const div = $(`<div class="row g-0">
-                          <div class="col-md-8">
-                          <div class="card-body">
-                          <h5 class="card-title">Boletim sobre: ${resItem.tipo_problema_boletim} - Previsão: ${resItem.previsao_boletim}h</h5>
-                          <p class="card-text">${resItem.desc_boletim}</p>
-                          <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_boletim} - ${resItem.bairro_boletim}, ${resItem.cidade_boletim}/${resItem.estado_boletim} - Cep: ${resItem.cep_boletim}</small></p>
-                          </div>
-                      </div>`);
-
-      if (tokenUser === resItem.token_user_boletim) {
-        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${resItem.id_boletim}')">Editar</a></button>
-                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${resItem.id_boletim}')">Deletar</a></button>`);
-      }
-      div.append(`<hr>`);
+      const div = $(`
+        <div class="card-body">
+        <h4 class="card-title">${resItem.tipo_problema_boletim} - Previsão: ${resItem.previsao_boletim}h</h4>
+        <p class="card-text">${resItem.desc_boletim}</p>
+        <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_boletim} - ${resItem.bairro_boletim}, ${resItem.cidade_boletim}/${resItem.estado_boletim} - Cep: ${resItem.cep_boletim}</small></p></div>`);
+      div.append(`<br/><hr>`);
       table.append(div);
     });
 
   }).fail(function (res) {
     let table = $('#tableContentBoletimHome');
     table.html("");
-    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    const tr = $(`<div class="card-body"><p colspan='4'>Não foi possível carregar a lista</p></div>`);
     table.append(tr);
   });
 }
@@ -253,27 +205,26 @@ function updateListUserBoletim() {
     });
 
     boletimUsuario.forEach(function (res) {
-      const div = $(`<div class="row g-0">
-                          <div class="col-md-8">
-                          <div class="card-body">
-                          <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
-                          <p class="card-text">${res.desc_boletim}</p>
-                          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
-                          </div>
-                      </div>`);
-
-      if (tokenUser === res.token_user_boletim) {
-        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
-                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
-      }
-      div.append(`<hr>`);
+      const div = $(`
+        <div class="card-body">
+        <h1 class="centraliza">Boletins Informativos</h1>
+        <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h4>
+        <p class="card-text">${res.desc_boletim}</p>
+        <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p></div>`);
+        if (tokenUser === res.token_user_boletim) {
+          div.append(`
+            <button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
+            <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>
+          `);
+        }
+      div.append(`<br/><hr>`);
       table.append(div);
     });
 
   }).fail(function (res) {
     let table = $('#tableContentBoletim');
     table.html("");
-    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    const tr = $(`<div class="card-body"><p colspan='4'>Não foi possível carregar a lista</p></div>`);
     table.append(tr);
   });
 }
@@ -320,18 +271,17 @@ function buscarBoletim(parametro_boletim) {
       // Realiza a comparação entre tipo_do_problema_boletim e res.tipo_problema
       if (tipo_do_problema_boletim === res.tipo_problema_boletim) {
         let res = el;
-        const div = $(`<div class="row g-0">
-                            <div class="col-md-8">
-                            <div class="card-body">
-                            <h5 class="card-title">Boletim sobre: ${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h5>
-                            <p class="card-text">${res.desc_boletim}</p>
-                            <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
-                            </div>
-                        </div>`);
-  
-        if (tokenUser === res.token_user_boletim) {
-          div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
-                      <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
+        const div = $(`
+          <div class="card-body">
+          <h1 class="centraliza">Boletins relatados:</h1>
+          <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h4>
+          <p class="card-text">${res.desc_boletim}</p>
+          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p></div>`);
+          if (tokenUser === res.token_user_boletim) {
+            div.append(`
+            <button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
+            <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>
+          `);
         }
         div.append(`</hr>`);
         table.append(div);
@@ -343,7 +293,7 @@ function buscarBoletim(parametro_boletim) {
     }).fail(function (res) {
       let table = $('#tableContentBoletimBuscar');
       table.html("");
-      const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+      const tr = $(`<div class="card-body"><p colspan='4'>Não foi possível carregar a lista</p></div>`);
       table.append(tr);
     });
   }else{
@@ -474,29 +424,22 @@ function updateListProblema() {
 
     $(res).each(function (k, el) {
       let resItem = el;
-      const div = $(`<div class="row g-0">
-                          <div class="col-md-8">
-                          <div class="card-body">
-                          <h5 class="card-title">Problema sobre: ${resItem.tipo_problema}</h5>
-                          <p class="card-text">${resItem.desc_problema}</p>
-                          <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_problema}, N° ${resItem.numero_rua_problema} - ${resItem.bairro_problema}, ${resItem.cidade_problema}/${resItem.estado_problema} - Cep: ${resItem.cep_problema}</small></p>
-                          </div>
-                      </div>`);
-
-      const img = $('<img>'); // Criar um elemento <img>
-      img.attr('src', `data:image/png;base64, ${resItem.foto}`); // Definir a fonte da imagem como a string base64
-      img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
-      img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
-      div.append(img); // Adicionar a imagem à div
-
-      div.append(`<hr>`);
-      table.append(div);
+      const div = $(`
+        <div class="card-body">
+        <h4 class="card-title">${resItem.tipo_problema}</h4>
+        <p class="card-text">${resItem.desc_problema}</p>`);
+        const img = $('<img>'); // Criar um elemento <img>
+        img.attr('src', `data:image/png;base64, ${resItem.foto}`); // Definir a fonte da imagem como a string base64
+        img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
+        div.append(img); // Adicionar a imagem à div
+        div.append(`<p class="card-tex"><small class="text-body-secondary">${resItem.logradouro_problema}, N° ${resItem.numero_rua_problema} - ${resItem.bairro_problema}, ${resItem.cidade_problema}/${resItem.estado_problema} - Cep: ${resItem.cep_problema}</small></p></div><br/><hr>`);
+        table.append(div);
     });
 
   }).fail(function (res) {
     let table = $('#tableContentProblemaHome');
     table.html("");
-    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    const tr = $(`<div class="card-body"><p colspan='4'>Não foi possível carregar a lista</p></div>`);
     table.append(tr);
   });
 }
@@ -518,35 +461,30 @@ function updateListUserProblema() {
     });
 
     problemasUsuario.forEach(function (res) {
-      const div = $(`<div class="row g-0">
-                        <div class="col-md-8">
-                          <div class="card-body">
-                            <h5 class="card-title">Problema sobre: ${res.tipo_problema}</h5>
-                            <p class="card-text">${res.desc_problema}</p>
-                            <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
-                          </div>
-                        </div>
-                      </div>`);
-
-      const img = $('<img>'); // Criar um elemento <img>
-      img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
-      img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
-      img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
-      div.append(img); // Adicionar a imagem à div
-
-      if (tokenUser === res.token_user_problema) {
-        div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
-                    <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></button>`);
-      }
-
-      div.append(`<hr>`);
+      const div = $(`
+          <div class="card-body">
+          <h1 class="centraliza">Problemas dos Usuários</h1>
+          <h4 class="card-title">${res.tipo_problema}</h4>
+          <p class="card-text">${res.desc_problema}</p>`);
+          const img = $('<img>'); // Criar um elemento <img>
+          img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
+          img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
+          div.append(img); // Adicionar a imagem à div
+          div.append(`<p class="card-tex"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p></div>`);
+          if (tokenUser === res.token_user_problema) {
+            div.append(`
+              <button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
+              <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></button>
+            `);
+          }
+      div.append(`<br/><hr>`);
       table.append(div);
     });
 
   }).fail(function (res) {
     let table = $('#tableContentProblema');
     table.html("");
-    const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+    const tr = $(`<div class="card-body"><p colspan='4'>Não foi possível carregar a lista</p></div>`);
     table.append(tr);
   });
 }
@@ -585,26 +523,20 @@ function buscarProblema(parametro_problema) {
   
         // Realiza a comparação entre tipo_do_problema e res.tipo_problema
         if (tipo_do_problema === res.tipo_problema) {
-          const div = $(`<div class="row g-0">
-                            <div class="col-md-8">
-                              <div class="card-body">
-                                <h5 class="card-title">Problema sobre: ${res.tipo_problema}</h5>
-                                <p class="card-text">${res.desc_problema}</p>
-                                <p class="card-text"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
-                              </div>
-                            </div>
-                          </div>`);
+          const div = $(`<div class="card-body">
+          <h1 class="centraliza">Problemas relatados</h1>
+          <h4 class="card-title">${res.tipo_problema}</h4>
+          <p class="card-text">${res.desc_problema}</p>`);
           const img = $('<img>'); // Criar um elemento <img>
           img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
-          img.addClass('img-fluid'); // Adicionar a classe para estilização (se necessário)
           img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
           div.append(img); // Adicionar a imagem à div
+          div.append(`<p class="card-tex"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p></div>`);
           if (tokenUser === res.token_user_problema) {
-            div.append(`<button  class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
-                        <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('boletim/${res.id_problema}')">Deletar</a></button>`);
-        }
-        div.append(`</hr>`);
-
+          div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
+              <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delProblema('problema/${res.id_problema}')">Deletar</a></button>`);
+          }
+          div.append(`<br/><hr>`);
           table.append(div);
         }
       });
@@ -614,7 +546,7 @@ function buscarProblema(parametro_problema) {
     }).fail(function (res) {
       let table = $('#tableContentProblemaBuscar');
       table.html("");
-      const tr = $(`<tr><td colspan='4'>Não foi possível carregar a lista</td></tr>`);
+      const tr = $(`<div class="card-body"><p colspan='4'>Não foi possível carregar a lista</p></div>`);
       table.append(tr);
     });
   }else{
