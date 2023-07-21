@@ -178,7 +178,8 @@ function updateListBoletim() {
         <div class="card-body">
         <h4 class="card-title">${resItem.tipo_problema_boletim} - Previsão: ${resItem.previsao_boletim}h</h4>
         <p class="card-text">${resItem.desc_boletim}</p>
-        <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_boletim} - ${resItem.bairro_boletim}, ${resItem.cidade_boletim}/${resItem.estado_boletim} - Cep: ${resItem.cep_boletim}</small></p></div>`);
+        <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_boletim} - ${resItem.bairro_boletim}, ${resItem.cidade_boletim}/${resItem.estado_boletim} - Cep: ${resItem.cep_boletim}</small></p>
+        <p class="card-text"><small class="text-body-secondary">Publicado por: ${resItem.nome_user_boletim}</small></p></div>`);
       div.append(`<br/><hr>`);
       table.append(div);
     });
@@ -279,7 +280,8 @@ function buscarBoletim(parametro_boletim) {
           <h1 class="centraliza">Boletins relatados:</h1>
           <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h4>
           <p class="card-text">${res.desc_boletim}</p>
-          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p></div>`);
+          <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+          <p class="card-text"><small class="text-body-secondary">Publicado por: ${res.nome_user_boletim}</small></p></div>`);
         div.append(`</hr>`);
         table.append(div);
       }
@@ -430,7 +432,8 @@ function updateListProblema() {
         img.attr('src', `data:image/png;base64, ${resItem.foto}`); // Definir a fonte da imagem como a string base64
         img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
         div.append(img); // Adicionar a imagem à div
-        div.append(`<p class="card-tex"><small class="text-body-secondary">${resItem.logradouro_problema}, N° ${resItem.numero_rua_problema} - ${resItem.bairro_problema}, ${resItem.cidade_problema}/${resItem.estado_problema} - Cep: ${resItem.cep_problema}</small></p></div><br/><hr>`);
+        div.append(`<p class="card-tex"><small class="text-body-secondary">${resItem.logradouro_problema}, N° ${resItem.numero_rua_problema} - ${resItem.bairro_problema}, ${resItem.cidade_problema}/${resItem.estado_problema} - Cep: ${resItem.cep_problema}</small></p>
+        <p class="card-text"><small class="text-body-secondary">Publicado por: ${resItem.nome_user_problema}</small></p></div><br/><hr>`);
         table.append(div);
     });
 
@@ -529,7 +532,8 @@ function buscarProblema(parametro_problema) {
           img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
           img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
           div.append(img); // Adicionar a imagem à div
-          div.append(`<p class="card-tex"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p></div>`);
+          div.append(`<p class="card-tex"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
+          <p class="card-text"><small class="text-body-secondary">Publicado por: ${res.nome_user_problema}</small></p></div>`);
           div.append(`<br/><hr>`);
           table.append(div);
         }
