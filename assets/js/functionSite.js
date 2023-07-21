@@ -746,3 +746,11 @@ $(function(){
     updateListProblema();
     updateListBoletim();
 });
+
+document.querySelector('.div1').addEventListener('scroll', function(event) {
+  document.querySelector('.div2').scrollTop = event.target.scrollTop;
+});
+
+document.querySelector('.div2').addEventListener('scroll', function(event) {
+  document.querySelector('.div1').scrollTop = event.target.scrollTop;
+});

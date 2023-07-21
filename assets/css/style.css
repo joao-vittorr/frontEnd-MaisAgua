@@ -81,9 +81,6 @@ header {
 
 .alinhandoManualmente{
     text-align: center;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 20px;
 }
 
 .img-postagem{
@@ -115,4 +112,24 @@ footer {
   
 footer p {
     margin: 0;
+}
+
+
+.containerr {
+    display: flex;
+}
+  
+.div1, .div2 {
+    width: 49%;
+    margin-left: 0.5%;
+    height: 88vh; /* Altura reduzida apenas para fins de exemplo */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+}
+
+  
+/* Esconde a barra de rolagem */
+  .div1::-webkit-scrollbar,
+  .div2::-webkit-scrollbar {
+    width: 0; /* Torna a largura da barra de rolagem zero */
 }
