@@ -107,8 +107,6 @@ function saveBoletim(){
     dados = $('#tipo_problema_boletim,#cep_boletim,#cidade_boletim,#estado_boletim,#logradouro_boletim,#bairro_boletim,#desc_boletim,#token_user_boletim,#previsao_boletim, #previsao_boletim').serializeJSON();
     dados['token_user_boletim'] = tokenUser;
 
-  console.log(dados);
-
       if (URL_EDIT != null) {
         //envia para a url do objeto
         url = URL_EDIT;
@@ -131,8 +129,11 @@ function saveBoletim(){
       }).fail(function (res) {
         console.log(res);
       });
+      var confirmacaoBoletim = confirm("Boletim Publicado!");
+        if (confirmacaoBoletim) {
+        location.reload();
+        }
   }
-
 }
 
 function editBoletim(url) {
@@ -246,6 +247,11 @@ function updateListUserBoletim() {
     // Filtrar os problemas relevantes ao tokenUser usando Array.filter()
     const boletimUsuario = res.filter((res) => res.token_user_boletim === tokenUser);
 
+    // Ordenar os boletins em ordem decrescente com base na propriedade id_boletim
+    boletimUsuario.sort(function (a, b) {
+      return b.id_boletim - a.id_boletim;
+    });
+
     boletimUsuario.forEach(function (res) {
       const div = $(`<div class="row g-0">
                           <div class="col-md-8">
@@ -260,7 +266,7 @@ function updateListUserBoletim() {
         div.append(`<button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
                     <button class="btn btn-danger"><a href="#" class="configuraBotao" onclick="delBoletim('boletim/${res.id_boletim}')">Deletar</a></button>`);
       }
-      div.append(`</hr>`);
+      div.append(`<hr>`);
       table.append(div);
     });
 
@@ -271,6 +277,7 @@ function updateListUserBoletim() {
     table.append(tr);
   });
 }
+
 
 function delBoletim(url){
   if (confirm("Deseja realmente deletar esse registro?")){
@@ -391,6 +398,19 @@ function saveProblema() {
       }
   });
 
+  // Verificar o tamanho da imagem selecionada
+  var fileInput = document.getElementById('foto');
+  var file = fileInput.files[0];
+  const maxSizeInBytes = 3 * 1024 * 1024; // 5 MB
+
+  if (file && file.size > maxSizeInBytes) {
+    var feedbackElemento = document.querySelector("#foto + .invalid-feedback");
+    feedbackElemento.textContent = "O tamanho da imagem excede o limite de 3MB.";
+    fileInput.classList.add("is-invalid");
+    feedbackElemento.style.display = "block";
+    formValido = false;
+  }
+
   if (formValido) {
 
   const fileInput = document.getElementById('foto');
@@ -429,12 +449,14 @@ function saveProblema() {
       }).fail(function (res) {
         console.log(res);
       });
-
+      var confirmacaoProblema = confirm("Problema Publicado!");
+      if (confirmacaoProblema) {
+      location.reload();
+      }
     })
     .catch(error => {
       console.error('Erro ao converter imagem:', error);
     });
-
   }
 }
 
@@ -490,6 +512,11 @@ function updateListUserProblema() {
     // Filtrar os problemas relevantes ao tokenUser usando Array.filter()
     const problemasUsuario = res.filter((res) => res.token_user_problema === tokenUser);
 
+    // Ordenar os problemas em ordem decrescente com base na propriedade id_problema
+    problemasUsuario.sort(function (a, b) {
+      return b.id_problema - a.id_problema;
+    });
+
     problemasUsuario.forEach(function (res) {
       const div = $(`<div class="row g-0">
                         <div class="col-md-8">
@@ -523,6 +550,7 @@ function updateListUserProblema() {
     table.append(tr);
   });
 }
+
 
 $(document).ready(function() {
     $('#formBuscaProblema').submit(function(event) {
