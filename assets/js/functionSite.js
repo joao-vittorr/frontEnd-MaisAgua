@@ -684,3 +684,119 @@ document.querySelector('.div1').addEventListener('scroll', function(event) {
 document.querySelector('.div2').addEventListener('scroll', function(event) {
   document.querySelector('.div1').scrollTop = event.target.scrollTop;
 });
+
+
+
+function meu_callbackProblema(conteudo) {
+    if (!("erro" in conteudo)) {
+        //Atualiza os campos com os valores.
+        document.getElementById('logradouro_problema').value=(conteudo.logradouro);
+        document.getElementById('bairro_problema').value=(conteudo.bairro);
+        document.getElementById('cidade_problema').value=(conteudo.localidade);
+        document.getElementById('estado_problema').value=(conteudo.uf);
+    } //end if.
+    else {
+        //CEP não Encontrado.
+        limpa_formulário_cep();
+        alert("CEP não encontrado.");
+    }
+}
+    
+function pesquisacepProblema(valor) {
+
+    //Nova variável "cep" somente com dígitos.
+    var cep = valor.replace(/\D/g, '');
+
+    //Verifica se campo cep possui valor informado.
+    if (cep != "") {
+
+        //Expressão regular para validar o CEP.
+        var validacep = /^[0-9]{8}$/;
+
+        //Valida o formato do CEP.
+        if(validacep.test(cep)) {
+
+            //Preenche os campos com "..." enquanto consulta webservice.
+            document.getElementById('logradouro_problema').value="...";
+            document.getElementById('bairro_problema').value="...";
+            document.getElementById('cidade_problema').value="...";
+            document.getElementById('estado_problema').value="...";
+
+            //Cria um elemento javascript.
+            var script = document.createElement('script');
+
+            //Sincroniza com o callback.
+            script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callbackProblema';
+
+            //Insere script no documento e carrega o conteúdo.
+            document.body.appendChild(script);
+
+        } //end if.
+        else {
+            //cep é inválido.
+            limpa_formulário_cep();
+            alert("Formato de CEP inválido.");
+        }
+    } //end if.
+    else {
+        //cep sem valor, limpa formulário.
+        limpa_formulário_cep();
+    }
+};
+
+function meu_callbackBoletim(conteudo) {
+  if (!("erro" in conteudo)) {
+      //Atualiza os campos com os valores.
+      document.getElementById('logradouro_boletim').value=(conteudo.logradouro);
+      document.getElementById('bairro_boletim').value=(conteudo.bairro);
+      document.getElementById('cidade_boletim').value=(conteudo.localidade);
+      document.getElementById('estado_boletim').value=(conteudo.uf);
+  } //end if.
+  else {
+      //CEP não Encontrado.
+      limpa_formulário_cep();
+      alert("CEP não encontrado.");
+  }
+}
+  
+function pesquisacepBoletim(valor) {
+
+  //Nova variável "cep" somente com dígitos.
+  var cep = valor.replace(/\D/g, '');
+
+  //Verifica se campo cep possui valor informado.
+  if (cep != "") {
+
+      //Expressão regular para validar o CEP.
+      var validacep = /^[0-9]{8}$/;
+
+      //Valida o formato do CEP.
+      if(validacep.test(cep)) {
+
+          //Preenche os campos com "..." enquanto consulta webservice.
+          document.getElementById('logradouro_boletim').value="...";
+          document.getElementById('bairro_boletim').value="...";
+          document.getElementById('cidade_boletim').value="...";
+          document.getElementById('estado_boletim').value="...";
+
+          //Cria um elemento javascript.
+          var script = document.createElement('script');
+
+          //Sincroniza com o callback.
+          script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callbackBoletim';
+
+          //Insere script no documento e carrega o conteúdo.
+          document.body.appendChild(script);
+
+      } //end if.
+      else {
+          //cep é inválido.
+          limpa_formulário_cep();
+          alert("Formato de CEP inválido.");
+      }
+  } //end if.
+  else {
+      //cep sem valor, limpa formulário.
+      limpa_formulário_cep();
+  }
+};

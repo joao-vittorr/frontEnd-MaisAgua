@@ -87,7 +87,7 @@
             </div>
             <div class="col-md-2">
               <label label for="cep_boletim" class="form-label">CEP</label>
-              <input type="text" class="form-control" id="cep_boletim" name="cep_boletim" placeholder="59215000"/>
+              <input type="text" class="form-control" id="cep_boletim" name="cep_boletim" placeholder="59215000" value="" onblur="pesquisacepBoletim(this.value)"/>
               <div class="invalid-feedback">Por favor, insira um CEP.</div>
             </div>
             <div class="col-md-5">
@@ -96,7 +96,7 @@
               <div class="invalid-feedback">Por favor, insira uma Cidade.</div>
             </div>
             <div class="col-5">
-              <label for="logradouro_boletim" class="form-label">Estado</label>
+              <label for="estado_boletim" class="form-label">Estado</label>
               <input type="text" class="form-control" id="estado_boletim" name="estado_boletim" placeholder="Rio Grande do Norte"/>
               <div class="invalid-feedback">Por favor, insira um Estado.</div>
             </div>
