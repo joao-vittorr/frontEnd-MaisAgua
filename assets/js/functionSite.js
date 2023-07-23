@@ -1,6 +1,7 @@
 //Google Login 
 //decodifica o jwt
 var tokenUser = null;
+var emailUser = null;
 var nomeUser = null;
 function jwtDecode (token) {
     var base64Url = token.split('.')[1];
@@ -43,6 +44,7 @@ function logout(){
 function setLoginStatus(cred){
     tokenUser = cred.sub;
     nomeUser = cred.given_name + " " + cred.family_name;
+    emailUser = cred.email;
     //esconde o botao de login do google
     document.querySelector(".g_id_signin").style.display = 'none';
     //mostra o usuario logado
@@ -55,7 +57,7 @@ function setLoginStatus(cred){
     //Mostra as opções de cadastrar Problema e Boletim ao usuario logado 
     var problemaNavBar = document.getElementById('problemaNavBar');
     problemaNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarProblema.html">Cadastrar Problema</a></div>`
-    if(tokenUser == "110955377050310839557" || tokenUser == "114600802078895812317"){
+    if(tokenUser == "ribeiro.alexandre@escolar.ifrn.edu.br" || tokenUser == "114600802078895812317" || emailUser =="ribeiro.alexandre@escolar.ifrn.edu.br" || emailUser == "wendel.john@escolar.ifrn.edu.br" ){
         var boletimNavBar = document.getElementById('boletimNavBar');
         boletimNavBar.innerHTML = `<div class="nav-item"><a class="nav-link active px-lg-3 py-1 py-lg-1" href="cadastrarBoletim.html">Cadastrar Boletim</a></div>`
     }
@@ -214,7 +216,8 @@ function updateListUserBoletim() {
         <h1 class="centraliza">Boletins Informativos</h1>
         <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h4>
         <p class="card-text">${res.desc_boletim}</p>
-        <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p></div>`);
+        <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
+        <p class="card-text"><small class="text-body-secondary">Publicado por: ${res.nome_user_boletim}</small></p></div>`);
         if (tokenUser === res.token_user_boletim || tokenUser === "110955377050310839557" || tokenUser === "114600802078895812317") {
           div.append(`
             <button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editBoletim('boletim/${res.id_boletim}')">Editar</a></button>
@@ -471,7 +474,8 @@ function updateListUserProblema() {
           img.attr('src', `data:image/png;base64, ${res.foto}`); // Definir a fonte da imagem como a string base64
           img.addClass('img-postagem'); // Adicionar a classe para estilização (se necessário)
           div.append(img); // Adicionar a imagem à div
-          div.append(`<p class="card-tex"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p></div>`);
+          div.append(`<p class="card-tex"><small class="text-body-secondary">${res.logradouro_problema}, N° ${res.numero_rua_problema} - ${res.bairro_problema}, ${res.cidade_problema}/${res.estado_problema} - Cep: ${res.cep_problema}</small></p>
+          <p class="card-text"><small class="text-body-secondary">Publicado por: ${res.nome_user_problema}</small></p></div>`);
           if (tokenUser === res.token_user_problema || tokenUser === "110955377050310839557" || tokenUser === "114600802078895812317") {
             div.append(`
               <button class="btn btn-primary"><a href="#" class="configuraBotao" onclick="editProblema('problema/${res.id_problema}')">Editar</a></button>
