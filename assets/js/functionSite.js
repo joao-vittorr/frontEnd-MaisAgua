@@ -79,7 +79,7 @@ window.addEventListener("load",() => {
 
 // enviando dados para o back-end
 
-var URL_BASE = "https://ec2-3-145-165-172.us-east-2.compute.amazonaws.com:443/"
+var URL_BASE = "http://ec2-3-145-165-172.us-east-2.compute.amazonaws.com:8080/"
 var URL_EDIT = null;
 
 function saveBoletim(){
