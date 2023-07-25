@@ -178,7 +178,7 @@ function updateListBoletim() {
       let resItem = el;
       const div = $(`
         <div class="card-body">
-        <h4 class="card-title">${resItem.tipo_problema_boletim} - Previsão: ${resItem.previsao_boletim}h</h4>
+        <h4 class="card-title">${resItem.tipo_problema_boletim} - Previsão: ${resItem.previsao_boletim}</h4>
         <p class="card-text">${resItem.desc_boletim}</p>
         <p class="card-text"><small class="text-body-secondary">${resItem.logradouro_boletim} - ${resItem.bairro_boletim}, ${resItem.cidade_boletim}/${resItem.estado_boletim} - Cep: ${resItem.cep_boletim}</small></p>
         <p class="card-text"><small class="text-body-secondary">Publicado por: ${resItem.nome_user_boletim}</small></p></div>`);
@@ -214,7 +214,7 @@ function updateListUserBoletim() {
       const div = $(`
         <div class="card-body">
         <h1 class="centraliza">Boletins Informativos</h1>
-        <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h4>
+        <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}</h4>
         <p class="card-text">${res.desc_boletim}</p>
         <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
         <p class="card-text"><small class="text-body-secondary">Publicado por: ${res.nome_user_boletim}</small></p></div>`);
@@ -281,7 +281,7 @@ function buscarBoletim(parametro_boletim) {
         const div = $(`
           <div class="card-body">
           <h1 class="centraliza">Boletins relatados:</h1>
-          <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}h</h4>
+          <h4 class="card-title">${res.tipo_problema_boletim} - Previsão: ${res.previsao_boletim}</h4>
           <p class="card-text">${res.desc_boletim}</p>
           <p class="card-text"><small class="text-body-secondary">${res.logradouro_boletim} - ${res.bairro_boletim}, ${res.cidade_boletim}/${res.estado_boletim} - Cep: ${res.cep_boletim}</small></p>
           <p class="card-text"><small class="text-body-secondary">Publicado por: ${res.nome_user_boletim}</small></p></div>`);
