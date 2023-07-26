@@ -246,6 +246,7 @@ function delBoletim(url){
     }).done(function(res) {
     console.log('Objeto deletado com sucesso');
     // Faça algo após a exclusão do objeto
+    updateListUserBoletim();
     updateListBoletim();
     }).fail(function(error) {
       console.error('Erro ao deletar objeto:', error);
@@ -597,6 +598,7 @@ function delProblema(url){
             console.log('Objeto deletado com sucesso');
             // Faça algo após a exclusão do objeto
             updateListProblema();
+            updateListUserProblema();
           }).fail(function(error) {
             console.error('Erro ao deletar objeto:', error);
             // Lida com possíveis erros na exclusão do objeto
