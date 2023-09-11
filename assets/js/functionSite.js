@@ -80,7 +80,7 @@ window.addEventListener("load",() => {
 // enviando dados para o back-end
 
 //var URL_BASE = "https://ec2-3-137-174-117.us-east-2.compute.amazonaws.com:8080/"
-var URL_BASE = "https://20.14.25.136:8080/"
+var URL_BASE = "https://localhost:8080/"
 var URL_EDIT = null;
 
 function saveBoletim(){
